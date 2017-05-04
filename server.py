@@ -11,16 +11,16 @@ def hello():
 
 @app.route('/signin', methods=['POST'])
 def login():
-    data = "1qaz2wsdx3edc"
-    return json.dumps({"success": True, "message": "You are now signed in", "data": data})
+    data = '1qaz2wsdx3edc'
+    return json.dumps({'success': True, 'message': 'You are now signed in', 'data': data})
 
 @app.route('/signup', methods=['POST'])
 def sign_up():
-    return json.dumps({"success": True, "message": "You are now signed up"})
+    return json.dumps({'success': True, 'message': 'You are now signed up'})
 
 @app.route('/signout', methods=['POST'])
 def sign_out():
-    return json.dumps({"success": True, "message": "You are now signed out"})
+    return json.dumps({'success': True, 'message': 'You are now signed out'})
 
 if __name__ == '__main__':
     http_server = WSGIServer(('', 8000), app, handler_class=WebSocketHandler)
