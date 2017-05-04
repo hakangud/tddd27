@@ -3,11 +3,11 @@ from gevent.pywsgi import WSGIServer
 from geventwebsocket.handler import WebSocketHandler
 import json
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder='login')
 
 @app.route('/')
 def hello():
-    return 'Hello world!'
+    return app.send_static_file('login.view.html')
 
 @app.route('/signin', methods=['POST'])
 def login():
