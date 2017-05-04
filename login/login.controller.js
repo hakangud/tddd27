@@ -9,6 +9,11 @@
     function LoginController($location, Flashservice) {
         var vm = this;
         vm.login = login;
-        
-    }
-}
+
+        function login() {
+            vm.dataLoading = true;
+            console.log("asdasdas");
+            Flashservice.Error("FELFELFELFLEFLFELFEFL");
+        };
+    };
+})();
