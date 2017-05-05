@@ -1,6 +1,7 @@
 from flask import request, Flask
 from gevent.pywsgi import WSGIServer
 from geventwebsocket.handler import WebSocketHandler
+from db_models import *
 import json
 
 app = Flask(__name__)
@@ -21,6 +22,19 @@ def sign_up():
 @app.route('/signout', methods=['POST'])
 def sign_out():
     return json.dumps({"success": True, "message": "You are now signed out"})
+
+
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    user = User(request.form['regEmail'], request.form['regPassword'])
+    registered_email = User.query.filter_by(email=user.email).first()
+
+    #if (registered_email is None) and (not (validate_email(request.form['regEmail']))):
+    if (registered_email is None):
+        db.session.add(user)
+        db.session.commit()
+    return json.dumps({"success": True, "message": "You are now registered"})
+
 
 if __name__ == '__main__':
     http_server = WSGIServer(('', 8000), app, handler_class=WebSocketHandler)
