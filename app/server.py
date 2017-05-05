@@ -4,24 +4,24 @@ from geventwebsocket.handler import WebSocketHandler
 from db_models import *
 import json
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder='login')
 
 @app.route('/')
 def hello():
-    return 'Hello world!'
+    return app.send_static_file('login.view.html')
 
 @app.route('/signin', methods=['POST'])
 def login():
-    data = "1qaz2wsdx3edc"
-    return json.dumps({"success": True, "message": "You are now signed in", "data": data})
+    data = '1qaz2wsdx3edc'
+    return json.dumps({'success': True, 'message': 'You are now signed in', 'data': data})
 
 @app.route('/signup', methods=['POST'])
 def sign_up():
-    return json.dumps({"success": True, "message": "You are now signed up"})
+    return json.dumps({'success': True, 'message': 'You are now signed up'})
 
 @app.route('/signout', methods=['POST'])
 def sign_out():
-    return json.dumps({"success": True, "message": "You are now signed out"})
+    return json.dumps({'success': True, 'message': 'You are now signed out'})
 
 
 @app.route('/register', methods=['GET', 'POST'])
