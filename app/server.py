@@ -6,6 +6,12 @@ import json
 
 app = Flask(__name__, static_folder='login')
 
+db.init_app(app)
+
+from initial_db import initial_db
+
+populate_db(app, db)
+
 @app.route('/')
 def hello():
     return app.send_static_file('login.view.html')
@@ -26,13 +32,18 @@ def sign_out():
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
-    user = User(request.form['regEmail'], request.form['regPassword'])
+    user = User(request.form['regEmail'], request.form['regPassword'],request.form['regName'], request.form['regFridge'])
     registered_email = User.query.filter_by(email=user.email).first()
+    user_fridge = Fridge.query.filter_by(id=user.fridge).first()
+
 
     #if (registered_email is None) and (not (validate_email(request.form['regEmail']))):
     if (registered_email is None):
-        db.session.add(user)
-        db.session.commit()
+        if user_fridge is not None:
+            db.session.add(user)
+            db.session.commit()
+        else:
+            return json.dumps({"success": False, "message": "Your fridge is not in our system"})
     return json.dumps({"success": True, "message": "You are now registered"})
 
 
