@@ -1,8 +1,8 @@
 from flask import request, Flask, send_file
 from gevent.pywsgi import WSGIServer
 from geventwebsocket.handler import WebSocketHandler
-#from db_models import *
-#from initial_db import initial_db
+from db_models import *
+from initial_db import initial_db
 import json
 
 app = Flask(__name__)

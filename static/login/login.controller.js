@@ -5,15 +5,14 @@
         .module('app')
         .controller('LoginController', LoginController);
 
-    LoginController.$inject = ['$location', 'Flashservice'];
-    function LoginController($location, Flashservice) {
+    LoginController.$inject = ['$location'];
+    function LoginController($location) {
         var vm = this;
         vm.login = login;
 
         function login() {
-            vm.dataLoading = true;
+            $location.path('/home');
             console.log("asdasdas");
-            Flashservice.Error("FELFELFELFLEFLFELFEFL");
         };
     };
 })();
