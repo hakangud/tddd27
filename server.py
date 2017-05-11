@@ -1,17 +1,22 @@
 from flask import request, Flask, send_file
 from gevent.pywsgi import WSGIServer
 from geventwebsocket.handler import WebSocketHandler
-#from db_models import *
-#from initial_db import initial_db
+from db_models import *
+from initial_db import initial_db
+from flask_sqlalchemy import SQLAlchemy
 import json
 
 app = Flask(__name__)
 app.debug = True
-#db.init_app(app)
+
+
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///localdb2.db'
+
+db.init_app(app)
 
 
 
-#populate_db(app, db)
+initial_db(app, db)
 
 @app.route('/')
 def hello():
@@ -48,7 +53,27 @@ def sign_out():
 #     return json.dumps({"success": True, "message": "You are now registered"})
 #
 
+def test_user():
+    with app.app_context():
+        user = User('eme.asp@hej.com', 'hej','Emelie','Aspholm', '1')
+        db.session.add(user)
+        db.session.commit()
+        fridges = Fridge.query.all()
+        id = fridges[0].id
+        print(id)
+
+        users = User.query.all()
+        user_id = users[0].fridge_id
+
+        print(user_id)
+        return fridges
+
+test_user()
+
+
 if __name__ == '__main__':
     http_server = WSGIServer(('', 8000), app, handler_class=WebSocketHandler)
     http_server.serve_forever()
     #app.run(host='127.1.1.3')
+
+
