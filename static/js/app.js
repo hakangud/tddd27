@@ -16,7 +16,9 @@
                 })
 
                 .when('/home', {
-                    templateUrl: '/static/home/home.view.html'
+                    controller: 'HomeController',
+                    templateUrl: '/static/home/home.view.html',
+                    controllerAs: 'vm'
                 })
 
                 .otherwise({ redirectTo: '/' });
