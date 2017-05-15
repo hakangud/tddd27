@@ -55,15 +55,30 @@ def sign_out():
 
 def test_user():
     with app.app_context():
-        user = User('eme.asp@hej.com', 'hej','Emelie','Aspholm', '1')
+        user = User('eme.asp@hej.com', 'hej','Emelie','Aspholm','2')
         db.session.add(user)
+
         db.session.commit()
         fridges = Fridge.query.all()
-        id = fridges[0].id
+
+
+        id = fridges[0].get_fridge_id()
         print(id)
 
+            # Method for adding a fridge to the user. Returns ...
+    #def add_fridge(self, this_fridge):
         users = User.query.all()
-        user_id = users[0].fridge_id
+        print(users[0].id)
+        #users[0].fridge_id = fridges[0].id
+
+        db.session.add(users[0])
+        #db.session.flush()
+        db.session.commit()
+        print("hej")
+        #return ''
+
+        users = User.query.all()
+        user_id = users[0].fridge.get_fridge_id()
 
         print(user_id)
         return fridges

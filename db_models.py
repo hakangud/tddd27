@@ -6,7 +6,20 @@ from flask_sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy()
 
-
+# class Person(db.Model):
+#     id = db.Column(db.Integer, primary_key=True)
+#     name = db.Column(db.String(100))
+#     # @note: renamed the column, so that can use the name 'region' for
+#     # relationship
+#     region_id = db.Column(db.Integer, db.ForeignKey('region.id'))
+#
+#     # define relationship
+#     region = db.relationship('Region', backref='people')
+#
+#
+# class Region(db.Model):
+#     id = db.Column(db.Integer, primary_key=True)
+#     name = db.Column(db.String(50))
 
 class User(db.Model):
     __tablename__ = "user"
@@ -17,18 +30,38 @@ class User(db.Model):
     last_name = db.Column('last_name', db.String(100))
     #fridge = db.Column('number', db.String(100), unique=True)
     registered_on = db.Column('registered_on', db.DateTime)
-    fridge_id = db.Column('fridge', db.Integer, db.ForeignKey('fridge.fridge_id'))
+    #fridge_id = db.Column('fridge_id', db.Integer, db.ForeignKey('fridge.fridge_id'))
+    fridge_id = db.Column(db.Integer, db.ForeignKey('fridge.fridge_id'))
+    #fridge_id = db.relationship('Fridge', back_populates="user")
 
-    user = db.relationship('Fridge')
+    fridge = db.relationship('Fridge')
 
 
-    def __init__(self, email=None, password=None, name=None, last_name= None, fridge=None):
+    def __init__(self, email=None, password=None, name=None, last_name= None, fridge_id=None):
         self.email = email
         self.password = password
         self.name = name
         self.last_name = last_name
-        self.fridge_id = fridge
+        self.fridge_id = fridge_id
         self.registered_on = datetime.utcnow()
+
+
+
+        #this_fridge = Fridge.query.filter_by(id = fridge_id).first()
+        #if fridge_id is not None and this_fridge is not None:
+
+            #self.add_fridge(this_fridge)
+
+
+
+
+    # # Method for adding a fridge to the user. Returns ...
+    # def add_fridge(self, this_fridge):
+    #
+    #     self.fridge_id = this_fridge
+    #     session.add(self)
+    #     db.session.commit()
+    #     return ''
 
 
 
@@ -40,7 +73,7 @@ class Fridge(db.Model):
     #grocery_array = [{kind: 'tomat',best_before: 2012-03-02},{kind: 'gurka', best_before: 2012-02-12}]
     groceries_in_fridge = ('groceries_in_fridge', db.JSON())
     #users = db.relationship('User')
-
+    user_id = db.relationship('User')
 
     def __init__(self, model_name=None, groceries_in_fridge=None):
         self.model_name = model_name
@@ -51,13 +84,19 @@ class Fridge(db.Model):
     def get_fridge_id(self):
         #return self.id
         return self.id
-#
-# class Grocery(db.Model):
-#     __tablename__ = "groceries"
-#     id = db.Column('grosseary_id', db.Integer, primary_key=True)
-#     name = db.Column('name', db.String(100))
-#
-#     def __init__(self, model_name=None,date = None):
-#         self.model_name = model_name
+
+class Grocery(db.Model):
+    __tablename__ = "groceries"
+    id = db.Column('grocery_id', db.Integer, primary_key=True)
+    name = db.Column('name', db.String(100))
 
 
+    def __init__(self, name=None, weight = None, best_before = ):
+        self.model_name = model_name
+
+
+class GroceriesInFridge(db.Model):
+    __tablename__ = "groceriesInFridge"
+
+    weight = db.Column('weight', db.Integer)
+    best_before = db.Column('best_before', db.DateTime)
