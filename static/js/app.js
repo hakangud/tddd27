@@ -2,10 +2,8 @@
     'use strict';
 
     angular
-        .module('app', ['ngRoute'])
+        .module('app', ['ngRoute', 'vpwd'])
         .config(config);
-
-
 
     config.$inject = ['$routeProvider'];
     function config($routeProvider) {
@@ -17,7 +15,9 @@
             })
 
             .when('/register', {
-                templateUrl: '/static/register/register.view.html'
+                controller: 'RegisterController',
+                templateUrl: '/static/register/register.view.html',
+                controllerAs: 'vm'
             })
 
             .when('/home', {

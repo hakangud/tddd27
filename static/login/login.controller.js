@@ -12,7 +12,7 @@
 
         function login() {
             $location.path('/home');
-            console.log("asdasdas");
+            console.log("logC");
         };
     };
 })();
