@@ -5,8 +5,8 @@
         .module('app')
         .controller('RegisterController', RegisterController);
 
-    RegisterController.$inject = ['$location'];
-    function RegisterController($location) {
+    RegisterController.$inject = ['$location', 'UserService'];
+    function RegisterController($location, UserService) {
         var vm = this;
 
         vm.register = register;
@@ -24,5 +24,5 @@
                     }
                 })
         }
-    };
+    }
 })();
