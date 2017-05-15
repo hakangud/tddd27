@@ -2,7 +2,7 @@
     'use strict';
 
     angular
-        .module('app', ['ngRoute', 'vpwd'])
+        .module('app', ['ngRoute', 'ngCookies', 'vpwd'])
         .config(config);
 
     config.$inject = ['$routeProvider'];
