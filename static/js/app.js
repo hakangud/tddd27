@@ -2,19 +2,30 @@
     'use strict';
 
     angular
-        .module('app', ['ngRoute'])
-        .config(['$routeProvider',
-            function($routeProvider) {
-            //console.log("app.js");
-            $routeProvider
-                .when('/', {
-                    templateUrl: '/static/home/home.view.html'
-                })
+        .module('app', ['ngRoute', 'ngCookies', 'vpwd', 'us'])
+        .config(config);
 
-                .when('/login', {
-                    templateUrl: '/static/login/login.view.html'
-                })
+    config.$inject = ['$routeProvider'];
+    function config($routeProvider) {
+        $routeProvider
+            .when('/', {
+                controller: 'LoginController',
+                templateUrl: '/static/login/login.view.html',
+                controllerAs: 'vm'
+            })
 
-                .otherwise({ redirectTo: '/' });
-        }]);
+            .when('/register', {
+                controller: 'RegisterController',
+                templateUrl: '/static/register/register.view.html',
+                controllerAs: 'vm'
+            })
+
+            .when('/home', {
+                controller: 'HomeController',
+                templateUrl: '/static/home/home.view.html',
+                controllerAs: 'vm'
+            })
+
+            .otherwise({ redirectTo: '/' });
+    };
 })();

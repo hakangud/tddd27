@@ -92,5 +92,3 @@ if __name__ == '__main__':
     http_server = WSGIServer(('', 8000), app, handler_class=WebSocketHandler)
     http_server.serve_forever()
     #app.run(host='127.1.1.3')
-
-
