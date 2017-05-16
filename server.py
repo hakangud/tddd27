@@ -40,8 +40,8 @@ def sign_out():
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     with app.app_context():
-            user = User('emesasa.asp@hej.com', 'hej','Emelie','Aspholm','2')
-            #user = User(request.form['email'], request.form['password'],request.form['firstName'], request.form['lastName'],request.form['fridgeId'])
+            #user = User('emesasa.asp@hej.com', 'hej','Emelie','Aspholm','2')
+            user = User(request.form['email'], request.form['password'],request.form['firstName'], request.form['lastName'],request.form['fridgeId'])
             registered_email = User.query.filter_by(email=user.email).first()
             user_fridge = Fridge.query.filter_by(id=user.fridge_id).first()
 
@@ -88,7 +88,7 @@ def test_user():
         return fridges
 
 test_user()
-print(register())
+#print(register())
 
 
 if __name__ == '__main__':
