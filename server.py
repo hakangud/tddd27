@@ -18,6 +18,7 @@ db.init_app(app)
 
 initial_db(app, db)
 
+
 @app.route('/')
 def hello():
     return send_file('templates/index.html')
@@ -38,21 +39,22 @@ def sign_out():
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
-    user = User(request.form['email'], request.form['password'],request.form['firstName'], request.form['lastName'],request.form['fridgeId'])
-    registered_email = User.query.filter_by(email=user.email).first()
-    user_fridge = Fridge.query.filter_by(id=user.fridge).first()
+    with app.app_context():
+            user = User('emesasa.asp@hej.com', 'hej','Emelie','Aspholm','2')
+            #user = User(request.form['email'], request.form['password'],request.form['firstName'], request.form['lastName'],request.form['fridgeId'])
+            registered_email = User.query.filter_by(email=user.email).first()
+            user_fridge = Fridge.query.filter_by(id=user.fridge_id).first()
 
-
-    #if (registered_email is None) and (not (validate_email(request.form['regEmail']))):
-    if (registered_email is None):
-        if user_fridge is not None:
-            db.session.add(user)
-            db.session.commit()
-            return json.dumps({"message": "You are now registered"}), 200
-        else:
-            return json.dumps({"message": "Your fridge is not in our system"}), 400
-    else:
-        return json.dumps({"message": "The email is already in use"}), 400
+            #if (registered_email is None) and (not (validate_email(request.form['regEmail']))):
+            if (registered_email is None):
+                if user_fridge is not None:
+                    db.session.add(user)
+                    db.session.commit()
+                    return json.dumps({"message": "You are now registered"}), 200
+                else:
+                    return json.dumps({"message": "Your fridge is not in our system"}), 400
+            else:
+                return json.dumps({"message": "The email is already in use"}), 400
 
 
 def test_user():
@@ -86,6 +88,7 @@ def test_user():
         return fridges
 
 test_user()
+print(register())
 
 
 if __name__ == '__main__':
