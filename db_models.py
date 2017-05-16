@@ -71,32 +71,60 @@ class Fridge(db.Model):
     id = db.Column('fridge_id', db.Integer, primary_key=True)
     model_name = db.Column('model_name', db.String(100))
     #grocery_array = [{kind: 'tomat',best_before: 2012-03-02},{kind: 'gurka', best_before: 2012-02-12}]
-    groceries_in_fridge = ('groceries_in_fridge', db.JSON())
+    #groceries_in_fridge = ('groceries_in_fridge', db.JSON())
     #users = db.relationship('User')
     user_id = db.relationship('User')
+    #groceries = db.relationship("GroceriesInFridge", back_populates="fridge")
 
-    def __init__(self, model_name=None, groceries_in_fridge=None):
+    def __init__(self, model_name=None):
         self.model_name = model_name
-        self.groceries_in_fridge = json.dumps(groceries_in_fridge)
-
+        #self.groceries_in_fridge = json.dumps(groceries_in_fridge)
 
 
     def get_fridge_id(self):
         #return self.id
         return self.id
 
+
+    #     # Method for adding an existing Ingredient to this Course. The relationship attributes as the last two parameters
+    # def add_grocery(self, grocery, amount, best_before):
+    #     association = GroceriesInFridge(amount=amount, best_before=best_before)
+    #     association.grocery = grocery
+    #     self.groceries.append(association)
+    #     db.session.add(association)
+    #     return
+
+
+
+    def __repr__(self):
+        return self.model_name
+
 class Grocery(db.Model):
     __tablename__ = "groceries"
     id = db.Column('grocery_id', db.Integer, primary_key=True)
     name = db.Column('name', db.String(100))
+    #fridge = db.relationship("GroceriesInFridge", back_populates="groceries")
+
+    def __init__(self, name=None):
+        self.name = name
+
+    def __repr__(self):
+        return self.name
 
 
-    def __init__(self, name=None, weight = None, best_before = ):
-        self.model_name = model_name
+# class GroceriesInFridge(db.Model):
+#     __tablename__ = "groceries_in_fridge"
+#
+#     id = db.Column ('id', db.Integer, primary_key=True)
+#     fridge_id = db.Column ('fridge_id', db.Integer, db.ForeignKey('fridge.fridge_id'), default=0)
+#     grocery_id = db.Column ('grocery_id', db.Integer, db.ForeignKey('groceries.grocery_id'), default = 0)
+#     amount = db.Column('amount', db.Integer)
+#     best_before = db.Column('best_before', db.DateTime)
+#     #title = db.Column('title', db.String(100))
+#     fridge = db.relationship("Fridge", back_populates="groceries")
+#     grocery = db.relationship("Grocery", back_populates="fridge")
+#
+#
+#     def __repr__(self):
+#         return "".join((self.fridge.__repr__(),", ",self.grocery.__repr__()))
 
-
-class GroceriesInFridge(db.Model):
-    __tablename__ = "groceriesInFridge"
-
-    weight = db.Column('weight', db.Integer)
-    best_before = db.Column('best_before', db.DateTime)

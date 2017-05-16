@@ -36,22 +36,24 @@ def sign_out():
     return json.dumps({'success': True, 'message': 'You are now signed out'})
 
 
-# @app.route('/register', methods=['GET', 'POST'])
-# def register():
-#     user = User(request.form['regEmail'], request.form['regPassword'],request.form['regName'], request.form['regFridge'])
-#     registered_email = User.query.filter_by(email=user.email).first()
-#     user_fridge = Fridge.query.filter_by(id=user.fridge).first()
-#
-#
-#     #if (registered_email is None) and (not (validate_email(request.form['regEmail']))):
-#     if (registered_email is None):
-#         if user_fridge is not None:
-#             db.session.add(user)
-#             db.session.commit()
-#         else:
-#             return json.dumps({"success": False, "message": "Your fridge is not in our system"})
-#     return json.dumps({"success": True, "message": "You are now registered"})
-#
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    user = User(request.form['email'], request.form['password'],request.form['firstName'], request.form['lastName'],request.form['fridgeId'])
+    registered_email = User.query.filter_by(email=user.email).first()
+    user_fridge = Fridge.query.filter_by(id=user.fridge).first()
+
+
+    #if (registered_email is None) and (not (validate_email(request.form['regEmail']))):
+    if (registered_email is None):
+        if user_fridge is not None:
+            db.session.add(user)
+            db.session.commit()
+            return json.dumps({"message": "You are now registered"}), 200
+        else:
+            return json.dumps({"message": "Your fridge is not in our system"}), 400
+    else:
+        return json.dumps({"message": "The email is already in use"}), 400
+
 
 def test_user():
     with app.app_context():
