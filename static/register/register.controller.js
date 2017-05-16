@@ -16,13 +16,14 @@
             console.log("reg");
             UserService.Create(vm.user)
                 .then(function (response) {
-                    if (response.success) {
-                        $location.path('/login');
-                    }
-                    else {
-                        console.log("reg_error");
-                    }
-                })
+                    console.log(response);
+                    console.log(response.data);
+                    $location.path('/login');
+                },
+                function (errResponse) {
+                    console.log("reg_error");
+                }
+            );
         }
     }
 })();

@@ -30,12 +30,11 @@ def login():
 
 @app.route('/signup', methods=['POST'])
 def sign_up():
-    return json.dumps({'success': True, 'message': 'You are now signed up'})
+    return json.dumps({'message': 'You are now signed up'}), 200
 
 @app.route('/signout', methods=['POST'])
 def sign_out():
     return json.dumps({'success': True, 'message': 'You are now signed out'})
-
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -89,7 +88,6 @@ def test_user():
 
 test_user()
 #print(register())
-
 
 if __name__ == '__main__':
     http_server = WSGIServer(('', 8000), app, handler_class=WebSocketHandler)
