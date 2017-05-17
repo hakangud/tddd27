@@ -16,12 +16,11 @@
             console.log("reg");
             UserService.Create(vm.user)
                 .then(function (response) {
-                    console.log(response);
-                    console.log(response.data);
+                    console.log(response.data.message);
                     $location.path('/login');
                 },
                 function (errResponse) {
-                    console.log("reg_error");
+                    console.log(errResponse.data.message);
                 }
             );
         }

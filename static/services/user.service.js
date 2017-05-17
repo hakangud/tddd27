@@ -15,8 +15,8 @@
         return service;
 
         function Create(user) {
-            console.log(user);
             return $http.post('/register', user);
         }
     }
+
 })();

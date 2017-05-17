@@ -12,8 +12,7 @@
         console.log("logC");
 
         function login() {
-
             $location.path('/home');
-        };
-    };
+        }
+    }
 })();

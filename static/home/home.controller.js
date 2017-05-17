@@ -9,5 +9,5 @@
     function HomeController($location) {
         var vm = this;
         console.log("homeC");
-    };
+    }
 })();
