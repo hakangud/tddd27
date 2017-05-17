@@ -27,7 +27,7 @@
             <input type="password" name="password" id="password" class="form-control" ng-model="vm.user.password" required />
             <span ng-show="form.password.$dirty && form.password.$error.required" class="help-block">Password is required</span>
         </div>
-        <div ng-class="{ 'has-error': (form.rPassword.$error.pwmatch && !form.rPassword.$error.required) || (form.rPassword.$dirty && form.rPassword.$error.required)}">
+        <div class="form-group" ng-class="{ 'has-error': (form.rPassword.$error.pwmatch && !form.rPassword.$error.required) || (form.rPassword.$dirty && form.rPassword.$error.required)}">
             <label for="rPassword">Repeat Password</label>
             <input type="password" name="rPassword" id="rPassword" class="form-control" ng-model="vm.user.rPassword" verify-password="password" required />
             <span class="help-block" ng-show="form.rPassword.$error.pwmatch && !form.rPassword.$error.required">Passwords don't match.</span>

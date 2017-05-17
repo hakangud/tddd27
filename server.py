@@ -39,11 +39,11 @@ def sign_out():
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     with app.app_context():
+            data = json.loads(request.data.decode())
             #user = User('emesasa.asp@hej.com', 'hej','Emelie','Aspholm','2')
-            user = User(request.form['email'], request.form['password'],request.form['firstName'], request.form['lastName'],request.form['fridgeId'])
+            user = User(data['email'], data['password'], data['firstName'], data['lastName'], data['fridgeId'])
             registered_email = User.query.filter_by(email=user.email).first()
             user_fridge = Fridge.query.filter_by(id=user.fridge_id).first()
-
             #if (registered_email is None) and (not (validate_email(request.form['regEmail']))):
             if (registered_email is None):
                 if user_fridge is not None:
