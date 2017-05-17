@@ -5,8 +5,8 @@
         .module('app')
         .controller('RegisterController', RegisterController);
 
-    RegisterController.$inject = ['$location', 'UserService'];
-    function RegisterController($location, UserService) {
+    RegisterController.$inject = ['$location', 'UserService', 'MsgService'];
+    function RegisterController($location, UserService, MsgService) {
         var vm = this;
 
         vm.register = register;
@@ -17,10 +17,12 @@
             UserService.Create(vm.user)
                 .then(function (response) {
                     console.log(response.data.message);
+                    MsgService.Success(response.data.message);
                     $location.path('/login');
                 },
                 function (errResponse) {
                     console.log(errResponse.data.message);
+                    MsgService.Error(errResponse.data.message);
                 }
             );
         }
