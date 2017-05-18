@@ -46,7 +46,15 @@ class User(db.Model):
         self.registered_on = datetime.utcnow()
 
 
+    def is_active(self):
+        return True
 
+    def get_id(self):
+        return unicode(self.id)
+
+
+    def is_authenticated(self):
+        return True
         #this_fridge = Fridge.query.filter_by(id = fridge_id).first()
         #if fridge_id is not None and this_fridge is not None:
 

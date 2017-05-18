@@ -3,6 +3,7 @@ from gevent.pywsgi import WSGIServer
 from geventwebsocket.handler import WebSocketHandler
 from db_models import *
 from initial_db import initial_db
+from flask_login import LoginManager, login_user, logout_user, current_user
 from flask_sqlalchemy import SQLAlchemy
 import json
 
@@ -15,8 +16,11 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///localdb2.db'
 db.init_app(app)
 
 
-
 initial_db(app, db)
+
+login_manager = LoginManager()
+login_manager.init_app(app)
+
 
 
 @app.route('/')
@@ -25,8 +29,21 @@ def hello():
 
 @app.route('/signin', methods=['POST'])
 def login():
-    data = '1qaz2wsdx3edc'
-    return json.dumps({'success': True, 'message': 'You are now signed in', 'data': data})
+    with app.app_context():
+        #data = json.loads(request.data.decode())
+
+        #email = data['email']
+        #password = data['password']
+        registered_user = User.query.filter_by(email='eme.asp@hej.com', password='hej').first()
+        #registered_user = User.query.filter_by(email=email, password=password).first()
+        if registered_user is None:
+            return json.dumps({'message': 'Wrong email or password, try again'}), 400
+
+        login_user(registered_user)
+
+        #return groceries in the users fridge
+        data = '1qaz2wsdx3edc'
+        return json.dumps({'message': 'You are now signed in', 'data': data}), 200
 
 @app.route('/signup', methods=['POST'])
 def sign_up():
@@ -34,7 +51,8 @@ def sign_up():
 
 @app.route('/signout', methods=['POST'])
 def sign_out():
-    return json.dumps({'success': True, 'message': 'You are now signed out'})
+    logout_user()
+    return json.dumps({'message': 'You are now signed out'}), 200
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -87,6 +105,7 @@ def test_user():
         return fridges
 
 test_user()
+login()
 #print(register())
 
 if __name__ == '__main__':
