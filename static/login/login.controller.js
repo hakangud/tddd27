@@ -13,7 +13,10 @@
 
         function login() {
             console.log(vm.username + " " + vm.password);
-            $http.post('/login', { username: vm.username, password: vm.password });
+            $http.post('/login', { username: vm.username, password: vm.password })
+                .then(function (response) {
+                    console.log(response.data.message);
+                });
             $location.path('/home');
         }
     }
