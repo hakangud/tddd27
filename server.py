@@ -105,7 +105,7 @@ def test_user():
         return fridges
 
 test_user()
-login()
+#login()
 #print(register())
 
 if __name__ == '__main__':
