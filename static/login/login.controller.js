@@ -12,9 +12,17 @@
         console.log("logC");
 
         function login() {
-            console.log(vm.username + " " + vm.password);
-            $http.post('/login', { username: vm.username, password: vm.password });
+            console.log(vm.email + " " + vm.password);
+            $http.post('/login', { email: vm.email, password: vm.password })
+            .then(function (response) {
+                console.log(response.data.message);
+            },
+            function (errResponse) {
+                console.log(errResponse.data.message);
+            }
+            );
             $location.path('/home');
         }
     }
 })();
+
