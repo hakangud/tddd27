@@ -6,16 +6,17 @@ from initial_db import initial_db
 from flask_login import LoginManager, login_user, logout_user, current_user
 from flask_sqlalchemy import SQLAlchemy
 import json
+import os
 
 app = Flask(__name__)
 app.debug = True
 
 
+app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY','\xfb\x13\xdf\xa1@i\xd6>V\xc0\xbf\x8fp\x16#Z\x0b\x81\xeb\x16')
+
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///localdb2.db'
 
 db.init_app(app)
-
-
 initial_db(app, db)
 
 login_manager = LoginManager()
@@ -27,16 +28,17 @@ login_manager.init_app(app)
 def hello():
     return send_file('templates/index.html')
 
-@app.route('/signin', methods=['POST'])
+@app.route('/login', methods=['POST'])
 def login():
     with app.app_context():
-        #data = json.loads(request.data.decode())
+        data = json.loads(request.data.decode())
 
-        #email = data['email']
-        #password = data['password']
-        registered_user = User.query.filter_by(email='eme.asp@hej.com', password='hej').first()
-        #registered_user = User.query.filter_by(email=email, password=password).first()
+        email = data['email']
+        password = data['password']
+        #registered_user = User.query.filter_by(email='eme.asp@hej.com', password='hej').first()
+        registered_user = User.query.filter_by(email=email, password=password).first()
         if registered_user is None:
+            print "user is none"
             return json.dumps({'message': 'Wrong email or password, try again'}), 400
 
         login_user(registered_user)
