@@ -5,13 +5,15 @@
         .module('app')
         .controller('LoginController', LoginController);
 
-    LoginController.$inject = ['$location'];
-    function LoginController($location) {
+    LoginController.$inject = ['$location', '$http'];
+    function LoginController($location, $http) {
         var vm = this;
         vm.login = login;
         console.log("logC");
 
         function login() {
+            console.log(vm.username + " " + vm.password);
+            $http.post('/login', { username: vm.username, password: vm.password });
             $location.path('/home');
         }
     }
