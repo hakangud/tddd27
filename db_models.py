@@ -1,7 +1,6 @@
 import json
 from datetime import datetime
 
-
 from flask_sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy()
@@ -20,6 +19,8 @@ db = SQLAlchemy()
 # class Region(db.Model):
 #     id = db.Column(db.Integer, primary_key=True)
 #     name = db.Column(db.String(50))
+
+
 
 class User(db.Model):
     __tablename__ = "user"
@@ -55,6 +56,13 @@ class User(db.Model):
 
     def is_authenticated(self):
         return True
+
+    def is_anonymous(self):
+        return False
+
+    def __repr__(self):
+        return '<User %r>' % (self.email)
+
         #this_fridge = Fridge.query.filter_by(id = fridge_id).first()
         #if fridge_id is not None and this_fridge is not None:
 
