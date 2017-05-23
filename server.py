@@ -97,7 +97,7 @@ def login():
 
 
 
-    data = '1qaz2wsdx3edc'
+    data = registered_user.fridge.get_all_groceries_in_fridge()
 
     if registered_user is not None and registered_user.check_password(password):
         session['logged_in'] = True
