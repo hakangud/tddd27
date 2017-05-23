@@ -3,6 +3,11 @@ from datetime import datetime
 
 from flask_sqlalchemy import SQLAlchemy
 
+from werkzeug.security import generate_password_hash, \
+     check_password_hash
+
+
+
 db = SQLAlchemy()
 
 # class Person(db.Model):
@@ -26,7 +31,7 @@ class User(db.Model):
     __tablename__ = "user"
     id = db.Column('user_id', db.Integer, primary_key=True)
     email = db.Column('email', db.String(100), unique=True, index=True)
-    password = db.Column('password', db.String(100))
+    pw_hash = db.Column('password', db.String(100))
     name = db.Column('name', db.String(100))
     last_name = db.Column('last_name', db.String(100))
     #fridge = db.Column('number', db.String(100), unique=True)
@@ -40,25 +45,37 @@ class User(db.Model):
 
     def __init__(self, email=None, password=None, name=None, last_name= None, fridge_id=None):
         self.email = email
-        self.password = password
+        #self.password = password
         self.name = name
         self.last_name = last_name
         self.fridge_id = fridge_id
         self.registered_on = datetime.utcnow()
+        self.pw_hash = generate_password_hash(password)
 
 
-    def is_active(self):
-        return True
+    # def set_password(self, password):
+    #     print("user password set")
+    #     #self.pw_hash = generate_password_hash(password)
+    #     return generate_password_hash(password)
 
-    def get_id(self):
-        return unicode(self.id)
+    def check_password(self, password):
+        return check_password_hash(self.pw_hash, password)
 
 
-    def is_authenticated(self):
-        return True
 
-    def is_anonymous(self):
-        return False
+
+    # def is_active(self):
+    #     return True
+    #
+    # def get_id(self):
+    #     return unicode(self.id)
+    #
+    #
+    # def is_authenticated(self):
+    #     return True
+    #
+    # def is_anonymous(self):
+    #     return False
 
     def __repr__(self):
         return '<User %r>' % (self.email)

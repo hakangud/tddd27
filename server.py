@@ -52,7 +52,7 @@ def hello():
 #         password = data['password']
 #         #registered_user = User.query.filter_by(email='eme.asp@hej.com', password='hej').first()
 #         registered_user = User.query.filter_by(email=email, password=password).first()
-#         #sign_out()
+#         #logout_user()
 #         if registered_user is None:
 #             print "user is none"
 #             return json.dumps({'message': 'Wrong email or password, try again'}), 400
@@ -93,11 +93,13 @@ def login():
         email = data['email']
         password = data['password']
         #registered_user = User.query.filter_by(email='eme.asp@hej.com', password='hej').first()
-        registered_user = User.query.filter_by(email=email, password=password).first()
+        registered_user = User.query.filter_by(email=email).first()
+
+
 
     data = '1qaz2wsdx3edc'
 
-    if registered_user is not None:
+    if registered_user is not None and registered_user.check_password(password):
         session['logged_in'] = True
         print(status())
         session.pop('logged_in', None)
@@ -122,9 +124,11 @@ def sign_up():
     return json.dumps({'message': 'You are now signed up'}), 200
 
 @app.route('/signout', methods=['POST'])
-@login_required
+#@login_required
 def sign_out():
-    logout_user()
+    #logout_user()
+    if status():
+        session.pop('logged_in', None)
     return json.dumps({'message': 'You are now signed out'}), 200
 
 @app.route('/register', methods=['GET', 'POST'])
