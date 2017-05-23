@@ -106,6 +106,12 @@ class Fridge(db.Model):
         return ''
 
 
+    def get_all_groceries_in_fridge(self):
+        grocery_list = []
+        for x in self.groceries:
+            grocery_list.append({'name': x.grocery.name, 'amount': x.amount, 'best_before': x.best_before})
+        return grocery_list
+
 
     def __repr__(self):
         return self.model_name

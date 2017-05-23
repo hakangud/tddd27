@@ -181,7 +181,7 @@ def test_user():
         users = User.query.all()
         user_id = users[0].fridge.get_fridge_id()
 
-        data = users[0].fridge.groceries
+        data = users[0].fridge.get_all_groceries_in_fridge()
 
         print(data)
         print(user_id)
