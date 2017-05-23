@@ -156,10 +156,10 @@ def register():
 
 def test_user():
     with app.app_context():
-        user = User('hej@hej','hej','Emelie','Aspholm','2')
-        db.session.add(user)
-
-        db.session.commit()
+        # user = User('hej@hej','hej','Emelie','Aspholm','2')
+        # db.session.add(user)
+        #
+        # db.session.commit()
         fridges = Fridge.query.all()
 
 
@@ -181,11 +181,14 @@ def test_user():
         users = User.query.all()
         user_id = users[0].fridge.get_fridge_id()
 
+        data = users[0].fridge.groceries
+
+        print(data)
         print(user_id)
         print(current_user.__repr__())
         return fridges
 
-#test_user()
+test_user()
 #login()
 #print(register())
 
