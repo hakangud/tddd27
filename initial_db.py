@@ -35,7 +35,7 @@ def initial_db(app, db):
 
 
         #INITIATE DB WITH USERS
-        test_user = User('hej@hej', 'hej','Emelie','Aspholm','1')
+        test_user = User('hej@hej', 'hej','Emelie','Aspholm', '1')
         db.session.add(test_user)
 
         db.session.commit()

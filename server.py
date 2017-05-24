@@ -96,8 +96,11 @@ def login():
         registered_user = User.query.filter_by(email=email).first()
 
 
+    data = None
 
-    data = registered_user.fridge.get_all_groceries_in_fridge()
+    if registered_user.fridge:
+        data = registered_user.fridge.get_all_groceries_in_fridge()
+
 
     if registered_user is not None and registered_user.check_password(password):
         session['logged_in'] = True
@@ -179,7 +182,8 @@ def test_user():
         #return ''
 
         users = User.query.all()
-        user_id = users[0].fridge.get_fridge_id()
+        if users[0].fridge:
+            user_id = users[0].fridge.get_fridge_id()
 
         data = users[0].fridge.get_all_groceries_in_fridge()
 
