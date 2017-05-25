@@ -8,12 +8,14 @@
     RegisterController.$inject = ['$location', 'UserService', 'MsgService'];
     function RegisterController($location, UserService, MsgService) {
         var vm = this;
-
+        console.log(vm);
         vm.register = register;
         console.log("regC");
 
+
         function register() {
             console.log("reg");
+            console.log(vm.user);
             UserService.Create(vm.user)
                 .then(function (response) {
                     console.log(response.data.message);

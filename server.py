@@ -96,20 +96,21 @@ def login():
         registered_user = User.query.filter_by(email=email).first()
 
 
-    data = None
-
-    if registered_user.fridge:
-        data = registered_user.fridge.get_all_groceries_in_fridge()
 
 
-    if registered_user is not None and registered_user.check_password(password):
-        session['logged_in'] = True
-        print(status())
-        session.pop('logged_in', None)
-        print(status())
-        return json.dumps({'message': 'You are now signed in', 'data': data}), 200
-    else:
-        return json.dumps({'message': 'Wrong email or password, try again'}), 400
+        if registered_user is not None and registered_user.check_password(password):
+
+            data = None
+
+            if registered_user.fridge:
+                data = registered_user.fridge.get_all_groceries_in_fridge()
+
+            session['logged_in'] = True
+            print(status())
+
+            return json.dumps({'message': 'You are now signed in', 'data': data}), 200
+        else:
+            return json.dumps({'message': 'Wrong email or password, try again'}), 400
 
 
 
@@ -130,9 +131,12 @@ def sign_up():
 #@login_required
 def sign_out():
     #logout_user()
+    print('signout was visited')
     if status():
         session.pop('logged_in', None)
-    return json.dumps({'message': 'You are now signed out'}), 200
+        return json.dumps({'message': 'You are now signed out'}), 200
+    else:
+        return json.dumps({'message': 'You are not signed in'}), 400
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -140,7 +144,7 @@ def register():
     with app.app_context():
             data = json.loads(request.data.decode())
             #user = User('emesasa.asp@hej.com', 'hej','Emelie','Aspholm','2')
-            #TODO: store crypted password
+
             user = User(data['email'], data['password'], data['firstName'], data['lastName'], data['fridgeId'])
             registered_email = User.query.filter_by(email=user.email).first()
             user_fridge = Fridge.query.filter_by(id=user.fridge_id).first()
@@ -149,7 +153,7 @@ def register():
                 if user_fridge is not None:
                     db.session.add(user)
                     db.session.commit()
-                    print(current_user.__repr__())
+                    print(session.__repr__())
                     return json.dumps({"message": "You are now registered"}), 200
                 else:
                     return json.dumps({"message": "Your fridge is not in our system"}), 400
@@ -192,7 +196,7 @@ def test_user():
         print(current_user.__repr__())
         return fridges
 
-test_user()
+#test_user()
 #login()
 #print(register())
 

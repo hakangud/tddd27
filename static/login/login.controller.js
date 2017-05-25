@@ -5,8 +5,8 @@
         .module('app')
         .controller('LoginController', LoginController);
 
-    LoginController.$inject = ['$location', '$http'];
-    function LoginController($location, $http) {
+    LoginController.$inject = ['$location', '$http', 'MsgService', '$scope', 'UserService'];
+    function LoginController($location, $http, MsgService, $scope, UserService) {
         var vm = this;
         vm.login = login;
         console.log("logC");
@@ -16,12 +16,23 @@
             $http.post('/login', { email: vm.email, password: vm.password })
             .then(function (response) {
                 console.log(response.data.message);
+                //FridgeContentService.setFridgeContent(response.data.data);
+                vm.data = response.data.data;
+                console.log(vm.data);
+                $location.path('/home');
+
             },
             function (errResponse) {
                 console.log(errResponse.data.message);
+                MsgService.Error(errResponse.data.message);
             }
             );
-            $location.path('/home');
+
+        }
+
+
+        function login2() {
+            console.log('du klickade på login2');
         }
     }
 })();

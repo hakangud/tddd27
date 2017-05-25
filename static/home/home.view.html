@@ -9,3 +9,19 @@
     <hr>
     <h1>Hello {{ yourName }}</h1>
 </div>
+
+<table>
+    <tr>
+        <th>Earnings</th>
+        <th>Amount</th>
+        <th>Type</th>
+    </tr>
+    <tr ng-repeat="item in items">
+        <td>{{item.salary_head_name}}</td>
+        <td>{{item.salary_head_value}}</td>
+        <td>{{item.salary_head_type}}</td>
+
+    </tr>
+</table>
+
+<a href="/#/login" ng-click='logout2()'>Log out</a>
