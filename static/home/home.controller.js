@@ -5,8 +5,8 @@
         .module('app')
         .controller('HomeController', HomeController);
 
-    HomeController.$inject = ['$location','$http', '$scope'];
-    function HomeController($location, $http, $scope) {
+    HomeController.$inject = ['$location','$http', '$scope', 'FridgeService'];
+    function HomeController($location, $http, $scope, FridgeService) {
         var vm = this;
         console.log("homeC");
         console.log();
@@ -30,6 +30,8 @@
 
           }
 
+
+          $scope.items = FridgeService.getFridgeContent();
 //            $scope.items = [{
 //
 //                salary_head_name : 'BASIC',

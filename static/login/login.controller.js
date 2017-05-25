@@ -5,8 +5,8 @@
         .module('app')
         .controller('LoginController', LoginController);
 
-    LoginController.$inject = ['$location', '$http', 'MsgService', '$scope', 'UserService'];
-    function LoginController($location, $http, MsgService, $scope, UserService) {
+    LoginController.$inject = ['$location', '$http', 'MsgService', '$scope', 'FridgeService'];
+    function LoginController($location, $http, MsgService, $scope, FridgeService) {
         var vm = this;
         vm.login = login;
         console.log("logC");
@@ -16,7 +16,7 @@
             $http.post('/login', { email: vm.email, password: vm.password })
             .then(function (response) {
                 console.log(response.data.message);
-                //FridgeContentService.setFridgeContent(response.data.data);
+                FridgeService.setFridgeContent(response.data.data);
                 vm.data = response.data.data;
                 console.log(vm.data);
                 $location.path('/home');
