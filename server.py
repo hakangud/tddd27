@@ -9,6 +9,9 @@ import json
 import os
 from datetime import datetime
 
+from googleapiclient import discovery
+import httplib2
+from oauth2client import client, crypt
 
 app = Flask(__name__)
 app.debug = True
@@ -25,6 +28,8 @@ login_manager = LoginManager()
 login_manager.init_app(app)
 
 login_manager.login_view = 'login'
+
+websockets = {}
 
 # session.clear()
 
@@ -84,6 +89,33 @@ def hello():
 #         else:
 #             print('nope')
 
+@app.route('/websocket')
+def websocket():
+    if request.environ.get('wsgi.websocket'):
+        ws = request.environ['wsgi.websocket']
+        while True:
+            data = ws.receive()
+            websockets['ws'] = ws
+
+    return
+
+@app.route('/googleauth', methods=['POST'])
+def google_auth():
+    try:
+        data = json.loads(request.data.decode())
+        idinfo = client.verify_id_token(data['data'], '192085420693-gnet8a4sjhn89ll6ejjho1tudv3l2oaa.apps.googleusercontent.com')
+
+        if idinfo['iss'] not in ['accounts.google.com', 'https://accounts.google.com']:
+            raise crypt.AppIdentityError("Wrong issuer.")
+
+        else:
+            print "token ok"
+            userid = idinfo['sub']
+
+    except crypt.AppIdentityError:
+        print "invalid token"
+
+    return json.dumps({'success': True, 'message': 'You are now signed in'}), 200
 
 @app.route('/login', methods=['POST'])
 def login():
