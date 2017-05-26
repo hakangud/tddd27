@@ -27,6 +27,8 @@ login_manager.init_app(app)
 
 login_manager.login_view = 'login'
 
+websockets = {}
+
 # session.clear()
 
 @login_manager.user_loader
@@ -84,6 +86,16 @@ def hello():
 #             return json.dumps({'message': 'You are now signed in', 'data': data}), 200
 #         else:
 #             print('nope')
+
+@app.route('/websocket')
+def websocket():
+    if request.environ.get('wsgi.websocket'):
+        ws = request.environ['wsgi.websocket']
+        while True:
+            data = ws.receive()
+            websockets['ws'] = ws
+
+    return
 
 @app.route('/googleauth', methods=['POST'])
 def google_auth():
