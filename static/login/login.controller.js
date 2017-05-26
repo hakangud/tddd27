@@ -5,8 +5,8 @@
         .module('app')
         .controller('LoginController', LoginController);
 
-    LoginController.$inject = ['$location', '$http', 'MsgService', '$scope', 'FridgeService', '$window'];
-    function LoginController($location, $http, MsgService, $scope, FridgeService, $window) {
+    LoginController.$inject = ['$rootScope','$location', '$http', 'MsgService', '$scope', 'FridgeService', '$window', 'AuthService', 'SocketService'];
+    function LoginController($rootScope, $location, $http, MsgService, $scope, FridgeService, $window, AuthService, SocketService) {
 
         var vm = this;
 
@@ -74,6 +74,8 @@
         }
 
         function login() {
+            SocketService.init();
+            console.log($rootScope.ws);
             console.log(vm.email + " " + vm.password);
             $http.post('/login', { email: vm.email, password: vm.password })
             .then(function (response) {

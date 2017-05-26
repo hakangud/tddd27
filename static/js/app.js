@@ -4,7 +4,7 @@
 
 
     angular
-        .module('app', ['ngRoute', 'ngCookies', 'vpwd', 'us', 'msg', 'auth', 'fs'])
+        .module('app', ['ngRoute', 'ngCookies', 'vpwd', 'ss', 'us', 'msg', 'auth', 'fs'])
         .config(config)
         .run(run);
 
@@ -34,7 +34,7 @@
 
     run.$inject = ['$rootScope', '$window'];
     function run($rootScope, $window) {
-        $window.onLoadFunction = function () {
+        /*$window.onLoadFunction = function () {
             gapi.client.setApiKey('AIzaSyAcyC_XY9QBTct_r45E9yUNFaSILAY81kA');
             gapi.client.load('plus', 'v1', function() {});
         };
@@ -46,7 +46,7 @@
             p.src = 'https://apis.google.com/js/client.js?onload=onLoadFunction';
             var s = document.getElementsByTagName('script')[0];
             s.parentNode.insertBefore(p, s);
-        })();
+        })();*/
 
         /* FACEBOOK
 
