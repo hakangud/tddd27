@@ -4,6 +4,9 @@
     -moz-appearance:textfield !important;
 }
 
+.g-signin2 {
+    float: right;
+}
 
 
 table {
