@@ -1,4 +1,4 @@
-from db_models import Fridge, User, Grocery
+from db_models import Fridge, User, Grocery, GroceriesInFridge
 
 from datetime import datetime
 
@@ -23,9 +23,12 @@ def initial_db(app, db):
 
         #INITIATE DB WITH FRIDGES AND ADD GROCERIES
         fridge_1 = Fridge(u"Super fridge")
-        fridge_1.add_grocery(grocery_1, '100', datetime(2017, 05, 31))
-        fridge_1.add_grocery(grocery_2, '1', datetime(2017, 06, 01))
+        #fridge_1.add_grocery(grocery_1, '100', datetime(2017, 05, 31))
+        #fridge_1.add_grocery(grocery_2, '1', datetime(2017, 06, 01))
         db.session.add(fridge_1)
+
+
+
         fridge_2 = Fridge(u"My fridge")
         db.session.add(fridge_2)
 
@@ -38,8 +41,14 @@ def initial_db(app, db):
         test_user = User('hej@hej', 'hej','Emelie','Aspholm', '1')
         db.session.add(test_user)
 
+        test_user2 = User('hej@h', 'hej','Emelie','Aspholm', '2')
+        db.session.add(test_user2)
+
+
         db.session.commit()
 
-
+        association = GroceriesInFridge(fridge_1, grocery_3, '200', datetime(2017, 05, 31))
+        db.session.add(association)
+        db.session.commit()
 
 

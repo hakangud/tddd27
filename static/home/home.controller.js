@@ -5,13 +5,30 @@
         .module('app')
         .controller('HomeController', HomeController);
 
-    HomeController.$inject = ['$location','$http', '$scope', 'FridgeService'];
-    function HomeController($location, $http, $scope, FridgeService) {
+    HomeController.$inject = ['$location','$http', '$scope', 'FridgeService', 'MsgService'];
+    function HomeController($location, $http, $scope, FridgeService, MsgService) {
         var vm = this;
         console.log("homeC");
         console.log();
 
+        vm.add_groceries_to_database = add_groceries_to_database;
 
+
+        function add_groceries_to_database() {
+            console.log("reg");
+            console.log(vm.grocery);
+            FridgeService.updateDatabase(vm.grocery)
+                .then(function (response) {
+                    console.log(response.data.message);
+                    MsgService.Success(response.data.message);
+
+                },
+                function (errResponse) {
+                    console.log(errResponse.data.message);
+                    MsgService.Error(errResponse.data.message);
+                }
+            );
+        }
 
           //create a seperate controller for logout
           $scope.logout2 = function() {
@@ -32,6 +49,11 @@
 
 
           $scope.items = FridgeService.getFridgeContent();
+
+
+
+
+
 //            $scope.items = [{
 //
 //                salary_head_name : 'BASIC',

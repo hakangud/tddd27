@@ -7,6 +7,7 @@ from flask_login import LoginManager, login_user, logout_user, current_user, log
 from flask_sqlalchemy import SQLAlchemy
 import json
 import os
+from datetime import datetime
 
 
 app = Flask(__name__)
@@ -104,9 +105,13 @@ def login():
 
             if registered_user.fridge:
                 data = registered_user.fridge.get_all_groceries_in_fridge()
+                user_id = registered_user.get_id()
+
 
             session['logged_in'] = True
+            session['user_id'] = user_id
             print(status())
+            print(session)
 
             return json.dumps({'message': 'You are now signed in', 'data': data}), 200
         else:
@@ -161,6 +166,37 @@ def register():
                 return json.dumps({"message": "The email is already in use"}), 400
 
 
+
+@app.route('/addgrocery', methods=['POST'])
+
+def add_grocery_in_fridge():
+    if status():
+        print(session)
+        with app.app_context():
+            data = json.loads(request.data.decode())
+
+            name = 'tomato'
+
+            grocery = Grocery.query.filter_by(name=data['name']).first()
+            user = User.query.filter_by(id=session['user_id']).first()
+            #user = User.query.filter_by(id=1).first()
+            #fridge2 = Fridge.query.filter(Fridge.user.contains(user.get_id())).first()
+
+            fridge = Fridge.query.filter_by(id=user.fridge_id).first()
+            print(fridge)
+            if grocery is not None:
+                association = GroceriesInFridge(fridge, grocery, data['amount'], datetime.strptime(data['bestBefore'], '%Y-%m-%d'))
+                db.session.add(association)
+                db.session.commit()
+
+                #fridge.add_grocery(grocery, data['amount'], datetime.strptime(data['bestBefore'], '%Y-%m-%d'))
+                #db.session.add(fridge)
+                #db.session.commit()
+                return json.dumps({"message": "Grocery is added"}), 200
+            else:
+                return json.dumps({"message": "Grocery is not defined"}), 400
+
+
 def test_user():
     with app.app_context():
         # user = User('hej@hej','hej','Emelie','Aspholm','2')
@@ -169,7 +205,7 @@ def test_user():
         # db.session.commit()
         fridges = Fridge.query.all()
 
-
+        print(fridges[0].user)
         id = fridges[0].get_fridge_id()
         print(id)
 
@@ -192,6 +228,7 @@ def test_user():
         data = users[0].fridge.get_all_groceries_in_fridge()
 
         print(data)
+        print('user_id:')
         print(user_id)
         print(current_user.__repr__())
         return fridges
@@ -199,6 +236,7 @@ def test_user():
 #test_user()
 #login()
 #print(register())
+#add_grocery_in_fridge()
 
 if __name__ == '__main__':
     http_server = WSGIServer(('', 8000), app, handler_class=WebSocketHandler)

@@ -10,6 +10,9 @@
     <h1>Hello {{ yourName }}</h1>
 </div>
 
+
+<h3>This is the content of your fridge:</h3>
+
 <table>
     <tr>
         <th>Grocery</th>
@@ -24,4 +27,48 @@
     </tr>
 </table>
 
+
+<h3>Something missing?</h3>
+
+
+<div class="col-md-4">
+    <form name="form" ng-submit="vm.add_groceries_to_database()" role="form">
+        <div class="form-group" ng-class="{ 'has-error': form.name.$dirty && form.name.$error.required }">
+            <label for="name">Name</label>
+            <input type="name" name="name" id="name" class="form-control" ng-model="vm.grocery.name" required />
+            <span ng-show="form.name.$dirty && form.name.$error.required" class="help-block">Name is required</span>
+        </div>
+        <div class="form-group" ng-class="{ 'has-error': form.amount.$dirty && form.amount.$error.required }">
+            <label for="amount">Amount</label>
+            <input type="amount" name="amount" id="amount" class="form-control" ng-model="vm.grocery.amount" required />
+            <span ng-show="form.amount.$dirty && form.amount.$error.required" class="help-block">Amount is required</span>
+        </div>
+        <div class="form-group" ng-class="{ 'has-error': form.bestBefore.$dirty && form.bestBefore.$error.required }">
+            <label for="bestBefore">Best before</label>
+            <input type="bestBefore" name="bestBefore" id="bestBefore" class="form-control" ng-model="vm.grocery.bestBefore" required />
+            <span ng-show="form.bestBefore.$dirty && form.bestBefore.$error.required" class="help-block">Best before is required</span>
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" ng-disabled="form.$invalid || vm.dataLoading" class="btn btn-primary">Add</button>
+
+        </div>
+    </form>
+</div>
+
+
+
+<div>
+    <input type="text" ng-model="extraGrocery" placeholder="Enter the grocery here">
+    <input type="text" ng-model="extraGroceryAmount" placeholder="Enter the amount here">
+    <input type="text" ng-model="extraGroceryBestbefore" placeholder="Enter the best before date here">
+    <hr>
+    <p>{{ extraGrocery }} {{ extraGroceryAmount }} {{ extraGroceryBestbefore }}</p>
+    <a href="" ng-click='addGroceryToDatabase()'>Add groecery</a>
+
+</div>
+
+<hr>
+<hr>
+<hr>
 <a href="/#/login" ng-click='logout2()'>Log out</a>

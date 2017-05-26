@@ -5,14 +5,15 @@
         .module('fs', [])
         .factory('FridgeService', FridgeService);
 
+    FridgeService.$inject = ['$http'];
 
     console.log("fs");
-    function FridgeService() {
+    function FridgeService($http) {
         var service = {};
 
         service.setFridgeContent = setFridgeContent;
         service.getFridgeContent = getFridgeContent;
-
+        service.updateDatabase = updateDatabase;
 
         return service;
 
@@ -27,6 +28,12 @@
 
             return this.fridgeContent;
         };
+
+
+        function updateDatabase(ingredientInFridge) {
+            console.log('update database');
+            return $http.post('/addgrocery', ingredientInFridge);
+        }
 
 
 

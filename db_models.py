@@ -24,7 +24,7 @@ class User(db.Model):
     fridge_id = db.Column(db.Integer, db.ForeignKey('fridge.fridge_id'))
     #fridge_id = db.relationship('Fridge', back_populates="user")
 
-    fridge = db.relationship('Fridge')
+    fridge = db.relationship('Fridge', back_populates = "user")
 
 
     def __init__(self, email=None, password=None, name=None, last_name= None, fridge_id=None):
@@ -56,6 +56,10 @@ class User(db.Model):
     # def is_anonymous(self):
     #     return False
 
+    def get_id(self):
+        #return self.id
+        return self.id
+
     def __repr__(self):
         return '<User %r>' % (self.email)
 
@@ -84,7 +88,9 @@ class Fridge(db.Model):
     model_name = db.Column('model_name', db.String(100))
     #groceries_in_fridge = ('groceries_in_fridge', db.JSON())
     #users = db.relationship('User')
-    user_id = db.relationship('User')
+    #user_id = db.Column(db.Integer, db.ForeignKey('user.user_id'))
+
+    user = db.relationship('User', back_populates="fridge")
     groceries = db.relationship("GroceriesInFridge", back_populates="fridge")
 
     def __init__(self, model_name=None):
@@ -99,9 +105,9 @@ class Fridge(db.Model):
 
     # Method for adding an existing Grocery to this Fridge. The relationship attributes as the last two parameters
     def add_grocery(self, grocery, amount, best_before):
-        association = GroceriesInFridge(amount=amount, best_before=best_before)
-        association.grocery = grocery
-        self.groceries.append(association)
+        association = GroceriesInFridge(self, grocery=grocery, amount=amount, best_before=best_before)
+        #association.grocery = grocery
+        #self.groceries.append(association)
         db.session.add(association)
         return ''
 
@@ -140,6 +146,14 @@ class GroceriesInFridge(db.Model):
     #title = db.Column('title', db.String(100))
     fridge = db.relationship("Fridge", back_populates="groceries")
     grocery = db.relationship("Grocery", back_populates="fridge")
+
+
+    def __init__(self, fridge, grocery, amount, best_before):
+        self.fridge_id = fridge.id
+        self.grocery_id = grocery.id
+        self.amount = amount
+        self.best_before = best_before
+
 
 
     def __repr__(self):
