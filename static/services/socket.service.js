@@ -13,14 +13,14 @@
 
         return service;
 
-        function init() {
+        function init(email) {
             var fc = FridgeService.getFridgeContent;
             $rootScope.ws = new WebSocket('ws://' + location.host + '/websocket');
             $rootScope.ws.binaryType = 'arraybuffer';
 
             $rootScope.ws.onopen = function () {
                 console.log('connected');
-                $rootScope.ws.send("123");
+                $rootScope.ws.send(email);
             };
             $rootScope.ws.onmessage = function (evt) {
                 listener(evt);
