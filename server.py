@@ -8,7 +8,6 @@ from flask_sqlalchemy import SQLAlchemy
 import json
 import os
 from datetime import datetime
-import email_schedule
 from googleapiclient import discovery
 import httplib2
 from oauth2client import client, crypt
