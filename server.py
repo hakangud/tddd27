@@ -116,8 +116,11 @@ def websocket():
     if request.environ.get('wsgi.websocket'):
         ws = request.environ['wsgi.websocket']
         while True:
-            data = ws.receive()
-            websockets['ws'] = ws
+            email = ws.receive()
+            registered_user = User.query.filter_by(email=email).first()
+            if registered_user is not None:
+                user_id = registered_user.get_id()
+                websockets['user_id'] = ws
 
     return
 
@@ -160,6 +163,8 @@ def login():
             if registered_user.fridge:
                 data = registered_user.fridge.get_all_groceries_in_fridge()
                 user_id = registered_user.get_id()
+
+
 
 
             session['logged_in'] = True
