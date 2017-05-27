@@ -89,6 +89,9 @@ def hello():
 #         else:
 #             print('nope')
 
+def check_best_before():
+    print "checking best before"
+
 @app.route('/websocket')
 def websocket():
     if request.environ.get('wsgi.websocket'):
