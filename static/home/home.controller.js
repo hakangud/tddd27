@@ -5,8 +5,8 @@
         .module('app')
         .controller('HomeController', HomeController);
 
-    HomeController.$inject = ['$location','$http', '$scope', 'FridgeService', 'MsgService'];
-    function HomeController($location, $http, $scope, FridgeService, MsgService) {
+    HomeController.$inject = ['$rootScope', '$location','$http', '$scope', 'FridgeService', 'MsgService'];
+    function HomeController($rootScope, $location, $http, $scope, FridgeService, MsgService) {
         var vm = this;
         console.log("homeC");
         console.log();
@@ -44,8 +44,8 @@
                 console.log(errResponse.data.message);
             }
             );
-
-          }
+            $rootScope.ws.close();
+          };
 
 
           $scope.items = FridgeService.getFridgeContent();
