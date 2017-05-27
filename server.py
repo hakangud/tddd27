@@ -7,10 +7,11 @@ from flask_login import LoginManager, login_user, logout_user, current_user, log
 from flask_sqlalchemy import SQLAlchemy
 import json
 import os
+from datetime import datetime
+
 from googleapiclient import discovery
 import httplib2
 from oauth2client import client, crypt
-from datetime import datetime
 
 app = Flask(__name__)
 app.debug = True
@@ -88,6 +89,9 @@ def hello():
 #         else:
 #             print('nope')
 
+def check_best_before():
+    print "checking best before"
+
 @app.route('/websocket')
 def websocket():
     if request.environ.get('wsgi.websocket'):
@@ -136,8 +140,8 @@ def login():
 
             if registered_user.fridge:
                 data = registered_user.fridge.get_all_groceries_in_fridge()
+                user_id = registered_user.get_id()
 
-            user_id = registered_user.get_id()
 
             session['logged_in'] = True
             session['user_id'] = user_id
