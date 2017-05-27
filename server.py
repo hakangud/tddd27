@@ -12,6 +12,8 @@ from datetime import datetime
 from googleapiclient import discovery
 import httplib2
 from oauth2client import client, crypt
+import smtplib
+from email.mime.text import MIMEText
 
 app = Flask(__name__)
 app.debug = True
@@ -32,6 +34,23 @@ login_manager.login_view = 'login'
 websockets = {}
 
 # session.clear()
+
+def send_email(email, data):
+    text = ""
+    for s in data:
+        text += s + ", "
+
+    text = text[:-2]
+    msg = MIMEText("Your groceries: " + text + " expires tomorrow.")
+    msg['Subject'] = 'Groceries expires'
+    msg['From'] = 'myFridge'
+    msg['To'] = email
+
+    s = smtplib.SMTP('localhost')
+    print "sending email"
+    s.sendmail('hakangud@gmail.com', ['hakangud@gmail.com'], msg.as_string())
+    print "email sent"
+    s.quit()
 
 @login_manager.user_loader
 def load_user(id):
