@@ -114,6 +114,8 @@ class Fridge(db.Model):
 
     def get_all_groceries_in_fridge(self):
         grocery_list = []
+
+        print(self.groceries)
         for x in self.groceries:
             grocery_list.append({'name': x.grocery.name, 'amount': x.amount, 'best_before': str(x.best_before)})
         return grocery_list
@@ -138,9 +140,9 @@ class Grocery(db.Model):
 class GroceriesInFridge(db.Model):
     __tablename__ = "groceries_in_fridge"
 
-    #id = db.Column ('id', db.Integer, primary_key=True)
-    fridge_id = db.Column (db.Integer, db.ForeignKey('fridge.fridge_id'), primary_key=True)
-    grocery_id = db.Column (db.Integer, db.ForeignKey('groceries.grocery_id'), primary_key=True)
+    id = db.Column ('id', db.Integer, primary_key=True)
+    fridge_id = db.Column (db.Integer, db.ForeignKey('fridge.fridge_id'), default = 0)
+    grocery_id = db.Column (db.Integer, db.ForeignKey('groceries.grocery_id'),  default = 0)
     amount = db.Column('amount', db.Integer)
     best_before = db.Column('best_before', db.DateTime)
     #title = db.Column('title', db.String(100))
