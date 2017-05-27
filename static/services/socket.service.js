@@ -5,8 +5,8 @@
         .module('ss', [])
         .factory('SocketService', SocketService);
 
-    SocketService.$inject = ['$rootScope', '$timeout'];
-    function SocketService($rootScope, $timeout) {
+    SocketService.$inject = ['$rootScope', '$timeout', 'FridgeService'];
+    function SocketService($rootScope, $timeout, FridgeService) {
         var service = {};
 
         service.init = init;
@@ -14,6 +14,7 @@
         return service;
 
         function init() {
+            var fc = FridgeService.getFridgeContent;
             $rootScope.ws = new WebSocket('ws://' + location.host + '/websocket');
             $rootScope.ws.binaryType = 'arraybuffer';
 
