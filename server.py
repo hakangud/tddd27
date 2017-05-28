@@ -18,7 +18,6 @@ from email.mime.text import MIMEText
 app = Flask(__name__)
 app.debug = True
 
-#TODO: move to a file
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY','\xfb\x13\xdf\xa1@i\xd6>V\xc0\xbf\x8fp\x16#Z\x0b\x81\xeb\x16')
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///localdb2.db'
@@ -46,9 +45,10 @@ def send_email(email, data):
     msg['From'] = 'myFridge'
     msg['To'] = email
 
-    s = smtplib.SMTP('localhost')
+    #s = smtplib.SMTP('localhost')
+    s = smtplib.SMTP('smtp.gmail.com:587')
     print "sending email"
-    s.sendmail('hakangud@gmail.com', ['hakangud@gmail.com'], msg.as_string())
+    s.sendmail(email, [email], msg.as_string())
     print "email sent"
     s.quit()
 
@@ -115,17 +115,17 @@ def check_best_before():
 
         for user in users:
             groceries = user.fridge.get_all_groceries_in_fridge(convert_to_string = False)
-            grocery_expires_tomorrow = []
+            grocery_expires_tomorrow = list()
             for grocery in groceries:
                 if datetime.date(grocery['best_before']) == datetime.date(tomorrow):
-                    grocery_expires_tomorrow.append(grocery['name'])
+                    grocery_expires_tomorrow.append(str(grocery['name']))
             print('grocery expires tomorrow')
             print(grocery_expires_tomorrow)
 
             if grocery_expires_tomorrow:
                 print(user.email)
                 print(grocery_expires_tomorrow)
-                #send_email(user.email, grocery_expires_tomorrow)
+                #send_email(str(user.email), grocery_expires_tomorrow)
 
 
 @app.route('/websocket')
@@ -170,9 +170,6 @@ def login():
         #registered_user = User.query.filter_by(email='eme.asp@hej.com', password='hej').first()
         registered_user = User.query.filter_by(email=email).first()
 
-
-
-
         if registered_user is not None and registered_user.check_password(password):
 
             data = None
@@ -180,8 +177,6 @@ def login():
             if registered_user.fridge:
                 data = registered_user.fridge.get_all_groceries_in_fridge(convert_to_string = True)
                 user_id = registered_user.get_id()
-
-
 
 
             session['logged_in'] = True
@@ -250,13 +245,8 @@ def add_grocery_in_fridge():
         print(session)
         with app.app_context():
             data = json.loads(request.data.decode())
-
-            name = 'tomato'
-
             grocery = Grocery.query.filter_by(name=data['name']).first()
             user = User.query.filter_by(id=session['user_id']).first()
-            #user = User.query.filter_by(id=1).first()
-            #fridge2 = Fridge.query.filter(Fridge.user.contains(user.get_id())).first()
 
             fridge = Fridge.query.filter_by(id=user.fridge_id).first()
             print(fridge)
@@ -265,12 +255,39 @@ def add_grocery_in_fridge():
                 db.session.add(association)
                 db.session.commit()
 
-                #fridge.add_grocery(grocery, data['amount'], datetime.strptime(data['bestBefore'], '%Y-%m-%d'))
-                #db.session.add(fridge)
-                #db.session.commit()
+                data = user.fridge.get_all_groceries_in_fridge(convert_to_string = True)
+                #TODO: send websocket containing data here
                 return json.dumps({"message": "Grocery is added"}), 200
             else:
                 return json.dumps({"message": "Grocery is not defined"}), 400
+
+
+
+
+@app.route('/removegrocery', methods=['POST'])
+
+def remove_grocery_in_fridge():
+    if status():
+        print(session)
+        with app.app_context():
+            data = json.loads(request.data.decode())
+
+            grocery = Grocery.query.filter_by(name=data['name']).first()
+            user = User.query.filter_by(id=session['user_id']).first()
+            fridge = Fridge.query.filter_by(id=user.fridge_id).first()
+
+            if grocery is not None:
+                association = GroceriesInFridge.query.filter(GroceriesInFridge.grocery_id == grocery.id and GroceriesInFridge.fridge_id == fridge.id).first()
+                db.session.delete(association)
+                db.session.commit()
+
+                data = user.fridge.get_all_groceries_in_fridge(convert_to_string = True)
+                #TODO: send websocket containing data here
+
+                return json.dumps({"message": "Grocery is removed"}), 200
+            else:
+                return json.dumps({"message": "Grocery is not defined"}), 400
+
 
 
 def test_user():

@@ -17,7 +17,7 @@
         function add_groceries_to_database() {
             console.log("reg");
             console.log(vm.grocery);
-            FridgeService.updateDatabase(vm.grocery)
+            FridgeService.removeFromDatabase(vm.grocery)
                 .then(function (response) {
                     console.log(response.data.message);
                     MsgService.Success(response.data.message);
@@ -29,6 +29,23 @@
                 }
             );
         }
+
+        function remove_grocery_from_database() {
+            console.log("reg");
+            console.log(vm.grocery);
+            FridgeService.removeFromDatabase(vm.grocery)
+                .then(function (response) {
+                    console.log(response.data.message);
+                    MsgService.Success(response.data.message);
+
+                },
+                function (errResponse) {
+                    console.log(errResponse.data.message);
+                    MsgService.Error(errResponse.data.message);
+                }
+            );
+        }
+
 
           //create a seperate controller for logout
           $scope.logout2 = function() {

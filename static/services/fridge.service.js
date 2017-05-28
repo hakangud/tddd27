@@ -14,6 +14,7 @@
         service.setFridgeContent = setFridgeContent;
         service.getFridgeContent = getFridgeContent;
         service.updateDatabase = updateDatabase;
+        service.removeFromDatabase = removeFromDatabase;
 
         return service;
 
@@ -35,6 +36,12 @@
             return $http.post('/addgrocery', ingredientInFridge);
         }
 
+
+
+        function removeFromDatabase(ingredientInFridge) {
+            console.log('remove from database');
+            return $http.post('/removegrocery', ingredientInFridge);
+        }
 
 
     };

@@ -53,11 +53,25 @@ def initial_db(app, db):
         association2 = GroceriesInFridge(fridge_1, grocery_4, '200', datetime(2017, 05, 28))
         db.session.add(association2)
 
+
+
         db.session.commit()
 
 
+        #db.session.delete(association2)
+        #db.session.delete(association2)
+        print('ass')
+        print(association2)
+        #query_grocery_in_fridge = Grocery.query.filter(GroceriesInFridge.grocery_id == 3 and GroceriesInFridge.fridge_id == 1).first()
 
-        query_grocery_in_fridge = Grocery.query.join(GroceriesInFridge).join(Fridge).filter(GroceriesInFridge.grocery_id == 3 and GroceriesInFridge.fridge_id == 1).first()
+        #print(.query(User).filter(User.keywords.any(keyword='jek')))
+        query_grocery_in_fridge = Grocery.query.join(GroceriesInFridge).join(Fridge).filter(GroceriesInFridge.grocery_id == 4 and GroceriesInFridge.fridge_id == 1).first()
+
+        query_assosiation = GroceriesInFridge.query.filter(GroceriesInFridge.grocery_id == 4 and GroceriesInFridge.fridge_id == 1).first()
+        print('here')
+        print(query_assosiation)
+
         print(query_grocery_in_fridge)
-        #db.session.delete(query_grocery_in_fridge)
-        #db.session.commit()
+
+        db.session.delete(query_assosiation)
+        db.session.commit()

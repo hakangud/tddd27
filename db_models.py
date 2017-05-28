@@ -81,17 +81,105 @@ class User(db.Model):
 
 
 
+#
+# class Fridge(db.Model):
+#     __tablename__ = "fridge"
+#     id = db.Column('fridge_id', db.Integer, primary_key=True)
+#     model_name = db.Column('model_name', db.String(100))
+#
+#     #users = db.relationship('User')
+#     #user_id = db.Column(db.Integer, db.ForeignKey('user.user_id'))
+#     user = db.relationship('User', back_populates="fridge")
+#
+#     #groceries = db.relationship("GroceriesInFridge", back_populates="fridge")
+#     groceries = db.relationship("GroceriesInFridge", cascade="all, delete, delete-orphan")
+#
+#
+#     def __init__(self, model_name=None):
+#         self.model_name = model_name
+#         #self.groceries_in_fridge = json.dumps(groceries_in_fridge)
+#
+#
+#     def get_fridge_id(self):
+#         #return self.id
+#         return self.id
+#
+#
+#     # Method for adding an existing Grocery to this Fridge. The relationship attributes as the last two parameters
+#     def add_grocery(self, grocery, amount, best_before):
+#         association = GroceriesInFridge(self, grocery=grocery, amount=amount, best_before=best_before)
+#         #association.grocery = grocery
+#         #self.groceries.append(association)
+#         db.session.add(association)
+#         return ''
+#
+#
+#     def get_all_groceries_in_fridge(self, convert_to_string):
+#         grocery_list = []
+#
+#         print(self.groceries)
+#         if convert_to_string:
+#             for x in self.groceries:
+#                 grocery_list.append({'name': x.grocery.name, 'amount': x.amount, 'best_before': str(x.best_before)})
+#         else:
+#             for x in self.groceries:
+#                 grocery_list.append({'name': x.grocery.name, 'amount': x.amount, 'best_before': x.best_before})
+#         return grocery_list
+#
+#
+#     def __repr__(self):
+#         return self.model_name
+#
+# class Grocery(db.Model):
+#     __tablename__ = "groceries"
+#     id = db.Column('grocery_id', db.Integer, primary_key=True)
+#     name = db.Column('name', db.String(100))
+#     fridge = db.relationship("GroceriesInFridge", back_populates="grocery")
+#
+#     def __init__(self, name=None):
+#         self.name = name
+#
+#     def __repr__(self):
+#         return self.name
+#
+#
+# class GroceriesInFridge(db.Model):
+#     __tablename__ = "groceries_in_fridge"
+#
+#     id = db.Column ('id', db.Integer, primary_key=True)
+#     fridge_id = db.Column (db.Integer, db.ForeignKey('fridge.fridge_id'), default = 0)
+#     grocery_id = db.Column (db.Integer, db.ForeignKey('groceries.grocery_id'),  default = 0)
+#     amount = db.Column('amount', db.Integer)
+#     best_before = db.Column('best_before', db.DateTime)
+#     #title = db.Column('title', db.String(100))
+#     fridge = db.relationship("Fridge", back_populates="groceries", cascade="all, delete, delete-orphan", single_parent = True)
+#     grocery = db.relationship("Grocery", back_populates="fridge", cascade="all, delete, delete-orphan", single_parent = True)
+#
+#
+#     def __init__(self, fridge, grocery, amount, best_before):
+#         self.fridge_id = fridge.id
+#         self.grocery_id = grocery.id
+#         self.amount = amount
+#         self.best_before = best_before
+#
+#
+#
+#     def __repr__(self):
+#         return "".join((self.fridge.__repr__(),", ",self.grocery.__repr__()))
+
 
 class Fridge(db.Model):
     __tablename__ = "fridge"
     id = db.Column('fridge_id', db.Integer, primary_key=True)
     model_name = db.Column('model_name', db.String(100))
-    #groceries_in_fridge = ('groceries_in_fridge', db.JSON())
+
     #users = db.relationship('User')
     #user_id = db.Column(db.Integer, db.ForeignKey('user.user_id'))
-
     user = db.relationship('User', back_populates="fridge")
-    groceries = db.relationship("GroceriesInFridge", back_populates="fridge")
+
+    #groceries = db.relationship("GroceriesInFridge", back_populates="fridge")
+    groceries = db.relationship("GroceriesInFridge", back_populates="fridge",cascade="all, delete-orphan", lazy="joined")
+
 
     def __init__(self, model_name=None):
         self.model_name = model_name
@@ -132,7 +220,7 @@ class Grocery(db.Model):
     __tablename__ = "groceries"
     id = db.Column('grocery_id', db.Integer, primary_key=True)
     name = db.Column('name', db.String(100))
-    fridge = db.relationship("GroceriesInFridge", back_populates="grocery")
+    fridge = db.relationship("GroceriesInFridge", back_populates="grocery", cascade="all, delete-orphan", lazy="joined")
 
     def __init__(self, name=None):
         self.name = name
@@ -144,14 +232,13 @@ class Grocery(db.Model):
 class GroceriesInFridge(db.Model):
     __tablename__ = "groceries_in_fridge"
 
-    id = db.Column ('id', db.Integer, primary_key=True)
-    fridge_id = db.Column (db.Integer, db.ForeignKey('fridge.fridge_id'), default = 0)
-    grocery_id = db.Column (db.Integer, db.ForeignKey('groceries.grocery_id'),  default = 0)
+    fridge_id = db.Column (db.Integer, db.ForeignKey('fridge.fridge_id'), primary_key = True)
+    grocery_id = db.Column (db.Integer, db.ForeignKey('groceries.grocery_id'), primary_key = True)
     amount = db.Column('amount', db.Integer)
     best_before = db.Column('best_before', db.DateTime)
     #title = db.Column('title', db.String(100))
-    fridge = db.relationship("Fridge", back_populates="groceries")
-    grocery = db.relationship("Grocery", back_populates="fridge")
+    fridge = db.relationship("Fridge", back_populates="groceries", lazy="joined")
+    grocery = db.relationship("Grocery", back_populates="fridge", lazy="joined")
 
 
     def __init__(self, fridge, grocery, amount, best_before):
