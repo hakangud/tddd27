@@ -112,12 +112,16 @@ class Fridge(db.Model):
         return ''
 
 
-    def get_all_groceries_in_fridge(self):
+    def get_all_groceries_in_fridge(self, convert_to_string):
         grocery_list = []
 
         print(self.groceries)
-        for x in self.groceries:
-            grocery_list.append({'name': x.grocery.name, 'amount': x.amount, 'best_before': str(x.best_before)})
+        if convert_to_string:
+            for x in self.groceries:
+                grocery_list.append({'name': x.grocery.name, 'amount': x.amount, 'best_before': str(x.best_before)})
+        else:
+            for x in self.groceries:
+                grocery_list.append({'name': x.grocery.name, 'amount': x.amount, 'best_before': x.best_before})
         return grocery_list
 
 

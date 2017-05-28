@@ -7,7 +7,7 @@ from flask_login import LoginManager, login_user, logout_user, current_user, log
 from flask_sqlalchemy import SQLAlchemy
 import json
 import os
-from datetime import datetime
+from datetime import datetime, timedelta
 
 from googleapiclient import discovery
 import httplib2
@@ -90,7 +90,20 @@ def hello():
 #             print('nope')
 
 def check_best_before():
-    print "checking best before"
+    with app.app_context():
+        users = User.query.all()
+        tomorrow = datetime.now() + timedelta(days=1)
+
+        for user in users:
+            groceries = user.fridge.get_all_groceries_in_fridge(convert_to_string = False)
+            grocery_expires_tomorrow = []
+            for grocery in groceries:
+                if datetime.date(grocery['best_before']) == datetime.date(tomorrow):
+                    grocery_expires_tomorrow.append(grocery['name'])
+            print('grocery expires tomorrow')
+            print(grocery_expires_tomorrow)
+
+
 
 @app.route('/websocket')
 def websocket():
@@ -139,7 +152,7 @@ def login():
             data = None
 
             if registered_user.fridge:
-                data = registered_user.fridge.get_all_groceries_in_fridge()
+                data = registered_user.fridge.get_all_groceries_in_fridge(convert_to_string = True)
                 user_id = registered_user.get_id()
 
 
@@ -272,6 +285,8 @@ def test_user():
 #login()
 #print(register())
 #add_grocery_in_fridge()
+
+check_best_before()
 
 if __name__ == '__main__':
     http_server = WSGIServer(('', 8000), app, handler_class=WebSocketHandler)
