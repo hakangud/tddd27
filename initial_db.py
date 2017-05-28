@@ -38,7 +38,7 @@ def initial_db(app, db):
 
 
         #INITIATE DB WITH USERS
-        test_user = User('hej@hej', 'hej','Emelie','Aspholm', '1')
+        test_user = User('emelie.aspholm@hotmail.com', 'hej','Emelie','Aspholm', '1')
         db.session.add(test_user)
 
         test_user2 = User('hej@h', 'hej','Emelie','Aspholm', '2')

@@ -122,6 +122,10 @@ def check_best_before():
             print('grocery expires tomorrow')
             print(grocery_expires_tomorrow)
 
+            if grocery_expires_tomorrow:
+                print(user.email)
+                print(grocery_expires_tomorrow)
+                #send_email(user.email, grocery_expires_tomorrow)
 
 
 @app.route('/websocket')
