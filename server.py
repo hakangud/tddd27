@@ -12,6 +12,8 @@ from datetime import datetime, timedelta
 from googleapiclient import discovery
 import httplib2
 from oauth2client import client, crypt
+import smtplib
+from email.mime.text import MIMEText
 
 app = Flask(__name__)
 app.debug = True
@@ -32,6 +34,23 @@ login_manager.login_view = 'login'
 websockets = {}
 
 # session.clear()
+
+def send_email(email, data):
+    text = ""
+    for s in data:
+        text += s + ", "
+
+    text = text[:-2]
+    msg = MIMEText("Your groceries: " + text + " expires tomorrow.")
+    msg['Subject'] = 'Groceries expires'
+    msg['From'] = 'myFridge'
+    msg['To'] = email
+
+    s = smtplib.SMTP('localhost')
+    print "sending email"
+    s.sendmail('hakangud@gmail.com', ['hakangud@gmail.com'], msg.as_string())
+    print "email sent"
+    s.quit()
 
 @login_manager.user_loader
 def load_user(id):
@@ -110,8 +129,11 @@ def websocket():
     if request.environ.get('wsgi.websocket'):
         ws = request.environ['wsgi.websocket']
         while True:
-            data = ws.receive()
-            websockets['ws'] = ws
+            email = ws.receive()
+            registered_user = User.query.filter_by(email=email).first()
+            if registered_user is not None:
+                user_id = registered_user.get_id()
+                websockets['user_id'] = ws
 
     return
 
@@ -154,6 +176,8 @@ def login():
             if registered_user.fridge:
                 data = registered_user.fridge.get_all_groceries_in_fridge(convert_to_string = True)
                 user_id = registered_user.get_id()
+
+
 
 
             session['logged_in'] = True

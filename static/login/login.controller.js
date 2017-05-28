@@ -74,7 +74,7 @@
         }
 
         function login() {
-            SocketService.init();
+            SocketService.init(vm.email);
             console.log($rootScope.ws);
             console.log(vm.email + " " + vm.password);
             $http.post('/login', { email: vm.email, password: vm.password })
