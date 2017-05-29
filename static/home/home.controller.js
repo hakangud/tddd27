@@ -13,6 +13,8 @@
 
         vm.add_groceries_to_database = add_groceries_to_database;
 
+        vm.getRecipeTitles = getRecipeTitles;
+
 
         function add_groceries_to_database() {
             console.log("reg");
@@ -46,6 +48,15 @@
             );
         }
 
+        function getRecipeTitles() {
+            console.log('klickade recipe-titles');
+
+            response = FridgeService.getRecipeTitles();
+            console.log(response)
+
+
+
+        }
 
           //create a seperate controller for logout
           $scope.logout2 = function() {

@@ -140,6 +140,10 @@ class Grocery(db.Model):
     def __init__(self, name=None):
         self.name = name
 
+
+    def get_iterable(self):
+        return {'grocery_id': self.id, 'name': self.name}
+
     def __repr__(self):
         return self.name
 
@@ -186,28 +190,30 @@ class Recipe(db.Model):
         self.instructions = json.dumps(instructions)
 
 
-    # Method for adding an existing Ingredient to this Course. The relationship attributes as the last two parameters
-    def add_ingredient(self, ingredient, amount, stored_in_fridge):
+    def add_grocery(self, grocery, amount, stored_in_fridge):
         association = GroceryInRecipe(amount=amount, stored_in_fridge=stored_in_fridge)
-        association.ingredient = ingredient
-        self.ingredients.append(association)
+        association.grocery = grocery
+        self.groceries.append(association)
         db.session.add(association)
         return
 
     def get_id(self):
         return unicode(self.id)
 
-    # Returns the instructions from a string in json as a python-object. Used in get_detailed_iterable()
     def get_instructions(self):
         return json.loads(self.instructions)
 
-    # Returns all Ingredients for this Course as a python array of dictionaries. Used in get_detailed_iterable()
-    def get_groceries(self):
+
+    def get_groceries(self, get_fridge_content = False):
         groceries_to_return = []
         for x in self.groceries:
-            groceries_to_return = x.ingredient.get_iterable()
-            groceries_to_return.update({'amount': x.amount, 'stored_in_fridge': x.stored_in_fridge})
-            groceries_to_return.append(groceries_to_return)
+            grocery_to_return = x.grocery.get_iterable()
+            grocery_to_return.update({'amount': x.amount, 'stored_in_fridge': x.stored_in_fridge})
+            if get_fridge_content:
+                if x.stored_in_fridge:
+                    groceries_to_return.append(grocery_to_return)
+            else:
+                groceries_to_return.append(grocery_to_return)
         return groceries_to_return
 
     # Returns the Course as a python-dictionary, does not include instructions

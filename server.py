@@ -214,7 +214,7 @@ def sign_out():
     else:
         return json.dumps({'message': 'You are not signed in'}), 400
 
-@app.route('/register', methods=['GET', 'POST'])
+@app.route('/register', methods=['POST'])
 def register():
     print(current_user.__repr__())
     with app.app_context():
@@ -290,6 +290,46 @@ def remove_grocery_in_fridge():
 
 
 
+@app.route('/getrecipes', methods=['POST'])
+def get_recipes():
+    #if status():
+        #print(session)
+        with app.app_context():
+            #data = json.loads(request.data.decode())
+
+            user = User.query.filter_by(id=1).first()
+            fridge = Fridge.query.filter_by(id=user.fridge_id).first()
+            groceries_in_fridge = fridge.get_all_groceries_in_fridge(convert_to_string=False)
+            grocery_names = [grocery['name'] for grocery in groceries_in_fridge]
+
+
+            print('grocery_names')
+            print(grocery_names)
+
+            #recipes = Recipe.query.join(Fridge).filter(groceries_in_fridge.contains(groceries)).all()
+            #recipes = Recipe.query.join(Fridge).filter(Fridge.get_all_groceries_in_fridge() = Recipe.get_groceries(stored_in_fridge=True)).all()
+            #scenarios = Scenario.query.join(Hint).filter(Hint.release_time < time.time())
+            recipes = Recipe.query.all()
+            for recipe in recipes:
+                recipe_json = recipe.get_recipe()
+                recipe_fridge_groceries = recipe.get_groceries(get_fridge_content=True)
+                grocery_names_recipe = [grocery['name'] for grocery in recipe_fridge_groceries]
+                print('grocery_names_recipe')
+                print(grocery_names_recipe)
+                recipes_to_return = []
+
+                if set(grocery_names_recipe).issubset(set(grocery_names)):
+                    recipes_to_return.append(recipe_json)
+
+
+                #print(recipe_fridge_groceries)
+            print('recipes_to_return')
+            print(recipes_to_return)
+            return json.dumps({'recipies': recipes_to_return})
+
+
+
+
 def test_user():
     with app.app_context():
         # user = User('hej@hej','hej','Emelie','Aspholm','2')
@@ -332,6 +372,7 @@ def test_user():
 #add_grocery_in_fridge()
 
 check_best_before()
+get_recipes()
 
 if __name__ == '__main__':
     http_server = WSGIServer(('', 8000), app, handler_class=WebSocketHandler)

@@ -1,4 +1,4 @@
-from db_models import Fridge, User, Grocery, GroceriesInFridge
+from db_models import Fridge, User, Grocery, GroceriesInFridge, Recipe
 
 from datetime import datetime
 
@@ -47,6 +47,10 @@ def initial_db(app, db):
 
         db.session.commit()
 
+
+        association3 = GroceriesInFridge(fridge_1, grocery_1, '200', datetime(2017, 05, 29))
+        db.session.add(association3)
+
         association = GroceriesInFridge(fridge_1, grocery_3, '200', datetime(2017, 05, 29))
         db.session.add(association)
 
@@ -74,4 +78,28 @@ def initial_db(app, db):
         print(query_grocery_in_fridge)
 
         db.session.delete(query_assosiation)
+        db.session.commit()
+
+
+
+
+        tacopaj_course = Recipe(u"Tacopaj", 65, u"Blotlagg strobrodet i mjolken.")
+
+        # tacopaj_course.add_ingredient(butter_ingredient, 75, True)
+        # tacopaj_course.add_ingredient(flour_ingredient, 2, True)
+        # tacopaj_course.add_ingredient(graham_flour_ingredient, 1, True)
+        # tacopaj_course.add_ingredient(sour_cream_ingredient, 3, True)
+        # tacopaj_course.add_ingredient(minced_meat_ingredient, 500, True)
+        # tacopaj_course.add_ingredient(taco_spicemix_ingredient, 40, True)
+        # tacopaj_course.add_ingredient(taco_sauce_ingredient, 260, True)
+        # tacopaj_course.add_ingredient(egg_ingredient, 2, True)
+        # tacopaj_course.add_ingredient(aged_cheese_ingredient, 100, True)
+        # tacopaj_course.add_ingredient(salt_ingredient, 2, False)
+        # tacopaj_course.add_ingredient(pepper_ingredient, 3, False)
+
+        tacopaj_course.add_grocery(grocery_3, 75, True)
+        tacopaj_course.add_grocery(grocery_1, 2, True)
+        #tacopaj_course.add_grocery(grocery_2, 1, True)
+        #tacopaj_course.add_grocery(grocery_4, 3, True)
+        db.session.add(tacopaj_course)
         db.session.commit()
