@@ -18,9 +18,6 @@
         vm.remove_grocery_from_database = remove_grocery_from_database;
 
 
-
-
-
         $scope.anableCustomerDirective = false;
         $scope.showdiv = function(){
 //            if ($scope.anableCustomerDirective){
@@ -32,18 +29,37 @@
 
         };
 
+        var updateFridge = function () {
+            console.log('update fridge');
+            console.log(SocketService.actions[0]);
+            vm.items = SocketService.actions[0].data;
+        };
+
+        SocketService.registerCallback(updateFridge);
 
         // deep watch for websocket event
-        $scope.$watch(SocketService.collection, function () {
-            angular.forEach(SocketService.collection, function (value, key) {
-                console.log(value.action);
-            }, true);
+        //$scope.$watch(SocketService.collection, function () {
+        //    console.log("running watch function");
+        //    console.log(SocketService);
+        //    angular.forEach(SocketService.collection, function (value, key) {
+        //
+        //        console.log(value);
+        //        console.log(value.action);
+        //        if (value.action === 'updategroceries') {
+        //            console.log(value.data[0]);
+        //            console.log('message = ' + value.message);
+        //            vm.items = value.data;
+        //        }
+        //
+        //    }, true);
+        //
+
             //for (var x in SocketService.collection) {
             //    console.log(x);
             //}
             //console.log(SocketService.collection[0].action);
-            console.log("running watch function");
-        });
+
+        //});
 
         //$rootScope.$apply(function () {
         //    SocketService
