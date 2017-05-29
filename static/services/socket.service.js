@@ -8,12 +8,34 @@
     SocketService.$inject = ['$rootScope', '$timeout', 'FridgeService'];
     function SocketService($rootScope, $timeout, FridgeService) {
         var service = {};
+        var collection = [];
+        var ws = new WebSocket('ws://' + location.host + '/websocket');
 
-        service.init = init;
+        ws.onmessage = function(msg) {
+            collection.push(JSON.parse(msg.data));
+        };
+
+        service.collection = collection;
+        service.initWS = initWS;
+
+        function initWS(email) {
+            ws.send(JSON.stringify({ data: email}));
+        }
 
         return service;
 
-        function init(email) {
+        /*function listener(data) {
+            var messageObj = data;
+            console.log("Received data from websocket: ", messageObj);
+            // If an object exists with callback_id in our callbacks object, resolve it
+            if(callbacks.hasOwnProperty(messageObj.callback_id)) {
+                console.log(callbacks[messageObj.callback_id]);
+                $rootScope.$apply(callbacks[messageObj.callback_id].cb.resolve(messageObj.data));
+                delete callbacks[messageObj.callbackID];
+            }
+        }*/
+
+        /*function init(email) {
             var fc = FridgeService.getFridgeContent;
             $rootScope.ws = new WebSocket('ws://' + location.host + '/websocket');
             $rootScope.ws.binaryType = 'arraybuffer';
@@ -32,7 +54,7 @@
             $rootScope.ws.onclose = function () {
                 console.log('connection closed');
             };
-        }
+        }*/
 
         function listener(data) {
             var messageObj = data;

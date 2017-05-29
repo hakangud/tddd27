@@ -10,6 +10,8 @@
 
         var vm = this;
 
+        vm.SocketService = SocketService;
+
         vm.gmail = {
             username: '',
             email: ''
@@ -17,6 +19,9 @@
 
         vm.auth = '';
 
+        //vm.$apply(function () {
+        //    SocketService.collection
+        //})
         $window.onGoogleLogin = onGoogleLogin;
         //vm.fblogin = fblogin;
         vm.login = login;
@@ -65,7 +70,7 @@
             console.log("google signin");
             var id_token = googleUser.getAuthResponse().id_token;
             AuthService.GoogleServerAuth(id_token);
-            console.log(id_token);
+            //console.log(id_token);
             var profile = googleUser.getBasicProfile();
             console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
             console.log('Name: ' + profile.getName());
@@ -74,7 +79,6 @@
         }
 
         function login() {
-            SocketService.init(vm.email);
             console.log($rootScope.ws);
             console.log(vm.email + " " + vm.password);
             $http.post('/login', { email: vm.email, password: vm.password })
@@ -83,15 +87,14 @@
                 FridgeService.setFridgeContent(response.data.data);
                 vm.data = response.data.data;
                 console.log(vm.data);
+                SocketService.initWS(vm.email);
                 $location.path('/home');
-
             },
             function (errResponse) {
                 console.log(errResponse.data.message);
                 MsgService.Error(errResponse.data.message);
             }
             );
-
         }
 
 

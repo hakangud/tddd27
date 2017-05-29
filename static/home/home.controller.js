@@ -5,14 +5,30 @@
         .module('app')
         .controller('HomeController', HomeController);
 
-    HomeController.$inject = ['$rootScope', '$location','$http', '$scope', 'FridgeService', 'MsgService'];
-    function HomeController($rootScope, $location, $http, $scope, FridgeService, MsgService) {
+    HomeController.$inject = ['$rootScope', '$location','$http', '$scope', 'FridgeService', 'MsgService', 'SocketService'];
+    function HomeController($rootScope, $location, $http, $scope, FridgeService, MsgService, SocketService) {
         var vm = this;
         console.log("homeC");
         console.log();
 
+        vm.SocketService = SocketService;
         vm.add_groceries_to_database = add_groceries_to_database;
 
+        // deep watch for websocket event
+        $scope.$watch(SocketService.collection, function () {
+            angular.forEach(SocketService.collection, function (value, key) {
+                console.log(value.action);
+            }, true);
+            //for (var x in SocketService.collection) {
+            //    console.log(x);
+            //}
+            //console.log(SocketService.collection[0].action);
+            console.log("running watch function");
+        });
+
+        //$rootScope.$apply(function () {
+        //    SocketService
+        //})
 
         function add_groceries_to_database() {
             console.log("reg");
@@ -44,7 +60,7 @@
                 console.log(errResponse.data.message);
             }
             );
-            $rootScope.ws.close();
+            //$rootScope.ws.close();
           };
 
 

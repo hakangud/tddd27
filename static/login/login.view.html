@@ -22,5 +22,8 @@
             <div class="g-signin2" data-onsuccess="onGoogleLogin"></div>
         </div>
     </form>
+    <div ng-repeat="con in vm.SocketService.collection">
+        {{ con }}
+    </div>
     <!--<button ng-click="vm.fblogin()">FB Login</button>-->
 </div>

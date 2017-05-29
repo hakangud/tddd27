@@ -128,14 +128,24 @@ def check_best_before():
                 #send_email(user.email, grocery_expires_tomorrow)
 
 
+def get_user_id(email):
+    registered_user = User.query.filter_by(email=email).first()
+    user_id = registered_user.get_id()
+    return user_id
+
 @app.route('/websocket')
 def websocket():
     if request.environ.get('wsgi.websocket'):
         ws = request.environ['wsgi.websocket']
         while True:
-            email = ws.receive()
+            email = json.loads(ws.receive())['data']
+            print "email is"
+            print email
             registered_user = User.query.filter_by(email=email).first()
+            print "registered user is"
+            print registered_user
             if registered_user is not None:
+                print "user_id1 is"
                 user_id = registered_user.get_id()
                 websockets['user_id'] = ws
 
@@ -169,7 +179,6 @@ def login():
         password = data['password']
         #registered_user = User.query.filter_by(email='eme.asp@hej.com', password='hej').first()
         registered_user = User.query.filter_by(email=email).first()
-
 
 
 
@@ -212,6 +221,13 @@ def sign_up():
 #@login_required
 def sign_out():
     #logout_user()
+    # websocket test
+    user_id = get_user_id('hej@h')
+    print "user_id2 is"
+    print user_id
+    ws = websockets['user_id']
+    ws.send(json.dumps({'action': 'updategroceries', 'message': 'Groceries updated'}))
+
     print('signout was visited')
     if status():
         session.pop('logged_in', None)
