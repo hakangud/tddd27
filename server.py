@@ -146,7 +146,8 @@ def websocket():
             if registered_user is not None:
                 print "user_id1 is"
                 user_id = registered_user.get_id()
-                websockets['user_id'] = ws
+                print user_id
+                websockets[user_id] = ws
 
     return
 
@@ -222,8 +223,6 @@ def sign_out():
     user_id = get_user_id('hej@h')
     print "user_id2 is"
     print user_id
-    ws = websockets['user_id']
-    ws.send(json.dumps({'action': 'updategroceries', 'message': 'Groceries updated'}))
 
     print('signout was visited')
     if status():
@@ -272,9 +271,13 @@ def add_grocery_in_fridge():
                 association = GroceriesInFridge(fridge, grocery, data['amount'], datetime.strptime(data['bestBefore'], '%Y-%m-%d'))
                 db.session.add(association)
                 db.session.commit()
-
                 data = user.fridge.get_all_groceries_in_fridge(convert_to_string = True)
-                #TODO: send websocket containing data here
+                print session['user_id']
+                print websockets
+                print 'DATA'
+                print data
+                ws = websockets[session['user_id']]
+                ws.send(json.dumps({'action': 'updategroceries', 'message': 'Groceries updated', 'data': data}));
                 return json.dumps({"message": "Grocery is added"}), 200
             else:
                 return json.dumps({"message": "Grocery is not defined"}), 400
@@ -299,9 +302,9 @@ def remove_grocery_in_fridge():
                 if association is not None:
                     db.session.delete(association)
                     db.session.commit()
-
                     data = user.fridge.get_all_groceries_in_fridge(convert_to_string = True)
-                    #TODO: send websocket containing data here
+                    ws = websockets[session['user_id']]
+                    ws.send(json.dumps({'action': 'updategroceries', 'message': 'Groceries updated', 'data': data}));
                     return json.dumps({"message": "Grocery is removed"}), 200
                 else:
                     return json.dumps({"message": "Grocery is not in fridge"}), 400
