@@ -15,6 +15,8 @@
         service.getFridgeContent = getFridgeContent;
         service.updateDatabase = updateDatabase;
         service.removeFromDatabase = removeFromDatabase;
+        service.getRecipeTitles = getRecipeTitles;
+        service.getRecipeDetailed = getRecipeDetailed;
 
         return service;
 
@@ -37,10 +39,21 @@
         }
 
 
-
         function removeFromDatabase(ingredientInFridge) {
             console.log('remove from database');
             return $http.post('/removegrocery', ingredientInFridge);
+        }
+
+        function getRecipeTitles() {
+            console.log('get recipes');
+
+            return $http.get('/getrecipes');
+        }
+
+        function getRecipeDetailed(title) {
+            console.log('get recipes');
+
+            return $http.get('/getrecipedetailed/'+ title);
         }
 
 

@@ -276,24 +276,26 @@ def remove_grocery_in_fridge():
             user = User.query.filter_by(id=session['user_id']).first()
             fridge = Fridge.query.filter_by(id=user.fridge_id).first()
 
-            if grocery is not None:
+            if grocery and fridge is not None:
                 association = GroceriesInFridge.query.filter(GroceriesInFridge.grocery_id == grocery.id and GroceriesInFridge.fridge_id == fridge.id).first()
-                db.session.delete(association)
-                db.session.commit()
+                if association is not None:
+                    db.session.delete(association)
+                    db.session.commit()
 
-                data = user.fridge.get_all_groceries_in_fridge(convert_to_string = True)
-                #TODO: send websocket containing data here
-
-                return json.dumps({"message": "Grocery is removed"}), 200
+                    data = user.fridge.get_all_groceries_in_fridge(convert_to_string = True)
+                    #TODO: send websocket containing data here
+                    return json.dumps({"message": "Grocery is removed"}), 200
+                else:
+                    return json.dumps({"message": "Grocery is not in fridge"}), 400
             else:
                 return json.dumps({"message": "Grocery is not defined"}), 400
 
 
 
-@app.route('/getrecipes', methods=['POST'])
+@app.route('/getrecipes', methods=['GET'])
 def get_recipes():
-    #if status():
-        #print(session)
+    if status():
+        print(session)
         with app.app_context():
             #data = json.loads(request.data.decode())
 
@@ -306,9 +308,6 @@ def get_recipes():
             print('grocery_names')
             print(grocery_names)
 
-            #recipes = Recipe.query.join(Fridge).filter(groceries_in_fridge.contains(groceries)).all()
-            #recipes = Recipe.query.join(Fridge).filter(Fridge.get_all_groceries_in_fridge() = Recipe.get_groceries(stored_in_fridge=True)).all()
-            #scenarios = Scenario.query.join(Hint).filter(Hint.release_time < time.time())
             recipes = Recipe.query.all()
             for recipe in recipes:
                 recipe_json = recipe.get_recipe()
@@ -319,13 +318,21 @@ def get_recipes():
                 recipes_to_return = []
 
                 if set(grocery_names_recipe).issubset(set(grocery_names)):
-                    recipes_to_return.append(recipe_json)
+                    recipes_to_return.append(recipe_json['title'])
 
 
                 #print(recipe_fridge_groceries)
             print('recipes_to_return')
             print(recipes_to_return)
-            return json.dumps({'recipies': recipes_to_return})
+            return json.dumps({'recipes': recipes_to_return}), 200
+
+@app.route('/getrecipedetailed/<title>', methods=['GET'])
+def get_recipe_detailed(title):
+    if status():
+        with app.app_context():
+            recipe = Recipe.query.filter_by(title= title).first()
+            print('recipe detailed')
+            return json.dumps({'recipe_detailed': recipe.get_recipe()}),200
 
 
 
@@ -372,7 +379,7 @@ def test_user():
 #add_grocery_in_fridge()
 
 check_best_before()
-get_recipes()
+#get_recipes()
 
 if __name__ == '__main__':
     http_server = WSGIServer(('', 8000), app, handler_class=WebSocketHandler)

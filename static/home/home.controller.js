@@ -12,14 +12,15 @@
         console.log();
 
         vm.add_groceries_to_database = add_groceries_to_database;
-
         vm.getRecipeTitles = getRecipeTitles;
+        vm.getRecipeDetailed = getRecipeDetailed;
+        vm.remove_grocery_from_database = remove_grocery_from_database;
 
 
         function add_groceries_to_database() {
             console.log("reg");
             console.log(vm.grocery);
-            FridgeService.removeFromDatabase(vm.grocery)
+            FridgeService.updateDatabase(vm.grocery)
                 .then(function (response) {
                     console.log(response.data.message);
                     MsgService.Success(response.data.message);
@@ -32,10 +33,10 @@
             );
         }
 
-        function remove_grocery_from_database() {
+        function remove_grocery_from_database(index) {
             console.log("reg");
-            console.log(vm.grocery);
-            FridgeService.removeFromDatabase(vm.grocery)
+            console.log(vm.items[index]);
+            FridgeService.removeFromDatabase(vm.items[index])
                 .then(function (response) {
                     console.log(response.data.message);
                     MsgService.Success(response.data.message);
@@ -51,12 +52,45 @@
         function getRecipeTitles() {
             console.log('klickade recipe-titles');
 
-            response = FridgeService.getRecipeTitles();
-            console.log(response)
+            FridgeService.getRecipeTitles()
+                .then(function (response) {
+                    console.log(response.data.recipes);
+                    vm.titles = response.data.recipes;
+                    //MsgService.Success(response.data.data);
+
+                },
+                function (errResponse) {
+                    console.log(errResponse.data.message);
+                    MsgService.Error(errResponse.data.message);
+                }
+            );
+
+
+        }
+
+        function getRecipeDetailed(index) {
+            console.log('klickade recipe-detailed');
+
+            console.log(vm.titles[index]);
+
+
+            FridgeService.getRecipeDetailed(vm.titles[index])
+                .then(function (response) {
+                    console.log(response.data.recipe_detailed);
+                    //MsgService.Success(response.data.data);
+
+                },
+                function (errResponse) {
+                    console.log(errResponse.data.message);
+                    MsgService.Error(errResponse.data.message);
+                }
+            );
 
 
 
         }
+
+
 
           //create a seperate controller for logout
           $scope.logout2 = function() {
@@ -76,43 +110,8 @@
           };
 
 
-          $scope.items = FridgeService.getFridgeContent();
+          vm.items = FridgeService.getFridgeContent();
 
-
-
-
-
-//            $scope.items = [{
-//
-//                salary_head_name : 'BASIC',
-//                        salary_head_value : 15000,
-//                            salary_head_type : 'E'
-//
-//            }, {
-//
-//                salary_head_name : 'HRA',
-//                         salary_head_value : 7500,
-//                            salary_head_type : 'E'
-//
-//            },{
-//
-//                salary_head_name : 'Conveyance',
-//                         salary_head_value : 1600,
-//                            salary_head_type : 'E'
-//
-//            },{
-//
-//                salary_head_name : 'Med. Allow',
-//                        salary_head_value : 1800,
-//                            salary_head_type : 'E'
-//
-//            },{
-//
-//                salary_head_name : 'PF',
-//                         salary_head_value : 1800,
-//                            salary_head_type : 'D'
-//
-//            }];
 
 
     }
