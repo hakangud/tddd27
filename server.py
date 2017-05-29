@@ -269,7 +269,13 @@ def add_grocery_in_fridge():
             fridge = Fridge.query.filter_by(id=user.fridge_id).first()
             print(fridge)
             if grocery is not None:
-                association = GroceriesInFridge(fridge, grocery, data['amount'], datetime.strptime(data['bestBefore'], '%Y-%m-%d'))
+                association = GroceriesInFridge.query.filter(GroceriesInFridge.grocery_id == grocery.id and GroceriesInFridge.fridge_id == fridge.id).first()
+                if association:
+                    print(association.amount)
+                    association.amount += int(data['amount'])
+                    print(association.amount)
+                else:
+                    association = GroceriesInFridge(fridge, grocery, data['amount'], datetime.strptime(data['bestBefore'], '%Y-%m-%d'))
                 db.session.add(association)
                 db.session.commit()
 
@@ -317,26 +323,38 @@ def get_recipes():
         with app.app_context():
             #data = json.loads(request.data.decode())
 
-            user = User.query.filter_by(id=1).first()
+            user = User.query.filter_by(id=session['user_id']).first()
             fridge = Fridge.query.filter_by(id=user.fridge_id).first()
             groceries_in_fridge = fridge.get_all_groceries_in_fridge(convert_to_string=False)
             grocery_names = [grocery['name'] for grocery in groceries_in_fridge]
-
+            grocery_amount = [grocery['amount'] for grocery in groceries_in_fridge]
+            fridge_dictionary = dict(zip(grocery_names, grocery_amount))
 
             print('grocery_names')
             print(grocery_names)
 
             recipes = Recipe.query.all()
+            recipes_to_return = []
             for recipe in recipes:
                 recipe_json = recipe.get_recipe()
                 recipe_fridge_groceries = recipe.get_groceries(get_fridge_content=True)
                 grocery_names_recipe = [grocery['name'] for grocery in recipe_fridge_groceries]
+                grocery_amount_recipe = [grocery['amount'] for grocery in recipe_fridge_groceries]
+                recipe_dictionary = dict(zip(grocery_names_recipe, grocery_amount_recipe))
+
                 print('grocery_names_recipe')
                 print(grocery_names_recipe)
-                recipes_to_return = []
+
 
                 if set(grocery_names_recipe).issubset(set(grocery_names)):
-                    recipes_to_return.append(recipe_json['title'])
+                    recipe_amount_ok = True
+                    for name in grocery_names_recipe:
+                        if recipe_dictionary[name] > fridge_dictionary[name]:
+                            recipe_amount_ok = False
+                        #print(groceries_in_fridge)
+                        #print(recipe_fridge_groceries[i]['amount'])
+                    if recipe_amount_ok:
+                        recipes_to_return.append(recipe_json['title'])
 
 
                 #print(recipe_fridge_groceries)

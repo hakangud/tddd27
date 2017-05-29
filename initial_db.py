@@ -84,7 +84,7 @@ def initial_db(app, db):
 
 
         tacopaj_course = Recipe(u"Tacopaj", 65, u"Blotlagg strobrodet i mjolken.")
-
+        tacogryta_course = Recipe(u"Tacogryta", 70, u"Blotlagg strobrodet i mjolken och krydda grytan.")
         # tacopaj_course.add_ingredient(butter_ingredient, 75, True)
         # tacopaj_course.add_ingredient(flour_ingredient, 2, True)
         # tacopaj_course.add_ingredient(graham_flour_ingredient, 1, True)
@@ -99,7 +99,11 @@ def initial_db(app, db):
 
         tacopaj_course.add_grocery(grocery_3, 75, True)
         tacopaj_course.add_grocery(grocery_1, 2, True)
+
+        tacogryta_course.add_grocery(grocery_3, 70, True)
+        tacogryta_course.add_grocery(grocery_1, 1, True)
         #tacopaj_course.add_grocery(grocery_2, 1, True)
         #tacopaj_course.add_grocery(grocery_4, 3, True)
         db.session.add(tacopaj_course)
+        db.session.add(tacogryta_course)
         db.session.commit()

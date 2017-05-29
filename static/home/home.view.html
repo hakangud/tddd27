@@ -64,7 +64,7 @@
 
 <button ng-click="vm.getRecipeTitles()">Vad kan jag laga?</button>
 
-<button ng-click="vm.getRecipeDetailed()" ng-model="vm.title">Title1</button>
+<button ng-click="showdiv()">Title1</button>
 
 
 <div class="col-md-4">
@@ -72,27 +72,27 @@
 <h3>This is what you can cook:</h3>
 
     <a ng-click="vm.getRecipeDetailed($index)" ng-repeat="title in vm.titles">
-        <li class="list-group-item">{{title}}</li>
+        <li ng-click= "showdiv()" class="list-group-item">{{title}}</li>
     </a>
 
 </div>
 
 
 
-  <button class="btn" ng-click="open()">Open Modal</button>
 
-  <div modal="showModal" close="cancel()">
-    <div class="modal-header">
-        <h4>Modal Dialog</h4>
-    </div>
-    <div class="modal-body">
-        <p>Example paragraph with some text.</p>
-    </div>
-    <div class="modal-footer">
-      <button class="btn btn-success" ng-click="ok()">Okay</button>
-      <button class="btn" ng-click="cancel()">Cancel</button>
-    </div>
-  </div>
+<div id="d" class="col-md-4">
+    <div ng-if='anableCustomerDirective'><h3>{{vm.recipeDetailed.title}}</h3>
+        <p>Preparation time: {{vm.recipeDetailed.preparation_time}}</p>
+        <p>Instructions: {{vm.recipeDetailed.instructions}}</p>
+        <p>Ingredients:</p>
+        <li ng-repeat="ingredient in vm.recipeDetailed.groceries">{{ingredient.amount}} {{ingredient.name}}</li></div>
+</div>
+
+
+
+
+
+
 
 <hr>
 <hr>

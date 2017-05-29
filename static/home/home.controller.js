@@ -17,6 +17,22 @@
         vm.getRecipeDetailed = getRecipeDetailed;
         vm.remove_grocery_from_database = remove_grocery_from_database;
 
+
+
+
+
+        $scope.anableCustomerDirective = false;
+        $scope.showdiv = function(){
+//            if ($scope.anableCustomerDirective){
+//                $scope.anableCustomerDirective = false;
+//            }
+//            else {
+                $scope.anableCustomerDirective = true;
+            //}
+
+        };
+
+
         // deep watch for websocket event
         $scope.$watch(SocketService.collection, function () {
             angular.forEach(SocketService.collection, function (value, key) {
@@ -93,6 +109,8 @@
             FridgeService.getRecipeDetailed(vm.titles[index])
                 .then(function (response) {
                     console.log(response.data.recipe_detailed);
+
+                    vm.recipeDetailed = response.data.recipe_detailed;
                     //MsgService.Success(response.data.data);
 
                 },
