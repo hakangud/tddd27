@@ -53,6 +53,10 @@ def initial_db(app, db):
         association3 = GroceriesInFridge(fridge_1, grocery_1, '200', datetime(2017, 05, 31))
         db.session.add(association3)
 
+        association4 = GroceriesInFridge(fridge_2, grocery_1, '200', datetime(2017, 05, 31))
+        db.session.add(association4)
+
+
         association = GroceriesInFridge(fridge_1, grocery_3, '200', datetime(2017, 05, 31))
         db.session.add(association)
 
@@ -73,7 +77,9 @@ def initial_db(app, db):
         #print(.query(User).filter(User.keywords.any(keyword='jek')))
         query_grocery_in_fridge = Grocery.query.join(GroceriesInFridge).join(Fridge).filter(GroceriesInFridge.grocery_id == 4 and GroceriesInFridge.fridge_id == 1).first()
 
-        query_assosiation = GroceriesInFridge.query.filter(GroceriesInFridge.grocery_id == 4 and GroceriesInFridge.fridge_id == 1).first()
+        query_assosiation = GroceriesInFridge.query.filter(GroceriesInFridge.grocery_id == 1 and GroceriesInFridge.fridge_id == 2).first()
+
+        query_assosiation = GroceriesInFridge.query.filter(GroceriesInFridge.grocery_id == 4).filter(GroceriesInFridge.fridge_id == 1).first()
         print('here')
         print(query_assosiation)
 
@@ -87,6 +93,9 @@ def initial_db(app, db):
 
         tacopaj_course = Recipe(u"Tacopaj", 65, u"Blotlagg strobrodet i mjolken.")
         tacogryta_course = Recipe(u"Tacogryta", 70, u"Blotlagg strobrodet i mjolken och krydda grytan.")
+
+
+        omelette_recipe = Recipe(u"Omelette", 15, u"Blotlagg strobrodet i mjolken.")
         # tacopaj_course.add_ingredient(butter_ingredient, 75, True)
         # tacopaj_course.add_ingredient(flour_ingredient, 2, True)
         # tacopaj_course.add_ingredient(graham_flour_ingredient, 1, True)

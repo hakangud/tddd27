@@ -267,17 +267,22 @@ def add_grocery_in_fridge():
         with app.app_context():
             data = json.loads(request.data.decode())
             grocery = Grocery.query.filter_by(name=data['name']).first()
+            print('grocery id')
+            print(grocery.id)
+
             user = User.query.filter_by(id=session['user_id']).first()
 
             fridge = Fridge.query.filter_by(id=user.fridge_id).first()
+            print('fridge id')
+            print(fridge.id)
             print(fridge)
             if grocery is not None:
-                association = GroceriesInFridge.query.filter(GroceriesInFridge.grocery_id == grocery.id and GroceriesInFridge.fridge_id == fridge.id).first()
+                association = GroceriesInFridge.query.filter(GroceriesInFridge.grocery_id == grocery.id).filter(GroceriesInFridge.fridge_id == fridge.id).first()
                 if association:
-                    print(association.amount)
                     association.amount += int(data['amount'])
-                    print(association.amount)
+
                 else:
+                    print('no association')
                     association = GroceriesInFridge(fridge, grocery, data['amount'], datetime.strptime(data['bestBefore'], '%Y-%m-%d'))
                 db.session.add(association)
                 db.session.commit()
@@ -308,13 +313,13 @@ def remove_grocery_in_fridge():
             fridge = Fridge.query.filter_by(id=user.fridge_id).first()
 
             if grocery and fridge is not None:
-                association = GroceriesInFridge.query.filter(GroceriesInFridge.grocery_id == grocery.id and GroceriesInFridge.fridge_id == fridge.id).first()
+                association = GroceriesInFridge.query.filter(GroceriesInFridge.grocery_id == grocery.id).filter(GroceriesInFridge.fridge_id == fridge.id).first()
                 if association is not None:
                     db.session.delete(association)
                     db.session.commit()
                     data = user.fridge.get_all_groceries_in_fridge(convert_to_string = True)
                     ws = websockets[session['user_id']]
-                    ws.send(json.dumps({'action': 'updategroceries', 'message': 'Groceries updated', 'data': data}));
+                    ws.send(json.dumps({'action': 'updategroceries', 'message': 'Groceries updated', 'data': data}))
                     return json.dumps({"message": "Grocery is removed"}), 200
                 else:
                     return json.dumps({"message": "Grocery is not in fridge"}), 400
