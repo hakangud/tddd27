@@ -1,4 +1,4 @@
-<script src="https://apis.google.com/js/platform.js?onload=renderButton" async defer></script>
+<script src="https://apis.google.com/js/platform.js" async defer></script>
 <div class="text-center">
     <h1>myFridge</h1>
     <p>Welcome to your fridge!</p>
@@ -17,7 +17,7 @@
         </div>
         <div class="form-actions">
             <button type="submit" ng-disabled="form.$invalid || vm.dataLoading" class="btn btn-primary">Login</button>
-            <a href="javascript:void(0)" class="btn btn-default" id="my-signin2" ng-click="vm.renderButton()"> Login with Google</a>
+            <a href="javascript:void(0)" class="btn btn-default" id="my-signin2" ng-click="vm.googleLogin()"> Login with Google</a>
             <a href="#/register" class="btn btn-link">Register</a>
             <!--<fb:login-button ng-click="fbl" show-faces="true" max-rows="1" size="large"></fb:login-button>-->
             <!--<div class="g-signin2" data-onsuccess="onGoogleLogin"></div>-->
