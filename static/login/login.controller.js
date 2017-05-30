@@ -11,51 +11,32 @@
         var vm = this;
 
         vm.SocketService = SocketService;
-        vm.renderButton = renderButton;
-        //$window.renderButton = renderButton;
-        vm.gmail = {
-            username: '',
-            email: ''
-        };
+        vm.googleLogin = googleLogin;
 
-        vm.auth = '';
-
-        function onSuccess() {
-            var auth = gapi.auth2.getAuthInstance();
-            var googleUser = auth.currentUser.get();
-            //var user = auth.signIn();
-            console.log('Logged in as: ' + googleUser.getBasicProfile().getName());
-            var id_token = googleUser.getAuthResponse().id_token;
-            AuthService.GoogleServerAuth(id_token)
-                .then(function (response) {
-                    console.log(response.data.message);
-                    MsgService.Success(response.data.message);
-                    $location.path('/home');
-                },
-                function (errResponse) {
-                    console.log(errResponse.data.message);
-                    MsgService.Error(errResponse.data.message);
-                    $location.path('/login');
+        function googleLogin() {
+            gapi.load('auth2', function() {
+                gapi.auth2.init({
+                    client_id: '192085420693-gnet8a4sjhn89ll6ejjho1tudv3l2oaa.apps.googleusercontent.com',
+                    scope: "profile email"
+                }).then(function (auth2) {
+                    var auth = gapi.auth2.getAuthInstance();
+                    auth.signIn();
+                    var googleUser = auth.currentUser.get();
+                    var id_token = googleUser.getAuthResponse().id_token;
+                    AuthService.GoogleServerAuth(id_token)
+                        .then(function (response) {
+                            console.log(response.data.message);
+                            MsgService.Success(response.data.message);
+                            $location.path('/home');
+                        },
+                        function (errResponse) {
+                            console.log(errResponse.data.message);
+                            MsgService.Error(errResponse.data.message);
+                            $location.path('/login');
+                        });
                 });
-            //gapi.auth2.getAuthInstance().signOut();
-        }
-        function onFailure(error) {
-            console.log(error);
-        }
-        function renderButton() {
-            console.log('render button');
-            gapi.signin2.render('my-signin2', {
-                'scope': 'profile email',
-                'width': 200,
-                'height': 30,
-                'longtitle': true,
-                'theme': 'dark',
-                'onsuccess': onSuccess,
-                'onfailure': onFailure
             });
         }
-
-
 
         //$window.onbeforeunload = function(e){
         //    gapi.auth2.getAuthInstance().signOut();
