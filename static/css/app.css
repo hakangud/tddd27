@@ -4,11 +4,6 @@
     -moz-appearance:textfield !important;
 }
 
-.g-signin2 {
-    float: right;
-}
-
-
 table {
   border: 1px solid #666;
     width: 100%;
