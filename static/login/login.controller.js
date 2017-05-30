@@ -11,7 +11,8 @@
         var vm = this;
 
         vm.SocketService = SocketService;
-
+        vm.renderButton = renderButton;
+        //$window.renderButton = renderButton;
         vm.gmail = {
             username: '',
             email: ''
@@ -19,10 +20,48 @@
 
         vm.auth = '';
 
-        //vm.$apply(function () {
-        //    SocketService.collection
-        //})
-        $window.onGoogleLogin = onGoogleLogin;
+        function onSuccess() {
+            var auth = gapi.auth2.getAuthInstance();
+            var googleUser = auth.currentUser.get();
+            //var user = auth.signIn();
+            console.log('Logged in as: ' + googleUser.getBasicProfile().getName());
+            var id_token = googleUser.getAuthResponse().id_token;
+            AuthService.GoogleServerAuth(id_token)
+                .then(function (response) {
+                    console.log(response.data.message);
+                    MsgService.Success(response.data.message);
+                    $location.path('/home');
+                },
+                function (errResponse) {
+                    console.log(errResponse.data.message);
+                    MsgService.Error(errResponse.data.message);
+                    $location.path('/login');
+                });
+            //gapi.auth2.getAuthInstance().signOut();
+        }
+        function onFailure(error) {
+            console.log(error);
+        }
+        function renderButton() {
+            console.log('render button');
+            gapi.signin2.render('my-signin2', {
+                'scope': 'profile email',
+                'width': 200,
+                'height': 30,
+                'longtitle': true,
+                'theme': 'dark',
+                'onsuccess': onSuccess,
+                'onfailure': onFailure
+            });
+        }
+
+
+
+        //$window.onbeforeunload = function(e){
+        //    gapi.auth2.getAuthInstance().signOut();
+        //};
+        //$window.onGoogleLogin = onGoogleLogin;
+        //gapi.auth2.getAuthInstance().signOut();
         //vm.fblogin = fblogin;
         vm.login = login;
         //vm.onSignIn = onSignIn;
@@ -69,7 +108,17 @@
         function onGoogleLogin(googleUser) {
             console.log("google signin");
             var id_token = googleUser.getAuthResponse().id_token;
-            AuthService.GoogleServerAuth(id_token);
+            AuthService.GoogleServerAuth(id_token)
+                .then(function (response) {
+                    console.log(response.data.message);
+                    MsgService.Success(response.data.message);
+                    $location.path('/home');
+                },
+                function (errResponse) {
+                    console.log(errResponse.data.message);
+                    MsgService.Error(errResponse.data.message);
+                    $location.path('/login');
+                });
             //console.log(id_token);
             var profile = googleUser.getBasicProfile();
             console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
@@ -79,7 +128,6 @@
         }
 
         function login() {
-            console.log($rootScope.ws);
             console.log(vm.email + " " + vm.password);
             $http.post('/login', { email: vm.email, password: vm.password })
             .then(function (response) {

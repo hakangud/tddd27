@@ -47,7 +47,7 @@ def send_email(email, data):
 
     s = smtplib.SMTP('localhost')
     print "sending email"
-    s.sendmail('my fridge', [email], msg.as_string())
+    s.sendmail('myFridge', [email], msg.as_string())
     print "email sent"
     s.quit()
 
@@ -62,7 +62,7 @@ def before_request():
     g.user = current_user
 
 @app.route('/')
-def hello():
+def init():
     return send_file('templates/index.html')
 
 # @app.route('/login', methods=['POST'])
@@ -156,6 +156,8 @@ def google_auth():
     try:
         data = json.loads(request.data.decode())
         idinfo = client.verify_id_token(data['data'], '192085420693-gnet8a4sjhn89ll6ejjho1tudv3l2oaa.apps.googleusercontent.com')
+        print idinfo['name']
+        print idinfo['email']
 
         if idinfo['iss'] not in ['accounts.google.com', 'https://accounts.google.com']:
             raise crypt.AppIdentityError("Wrong issuer.")
@@ -163,11 +165,13 @@ def google_auth():
         else:
             print "token ok"
             userid = idinfo['sub']
+            return json.dumps({'success': True, 'message': 'You are now signed in'}), 200
 
     except crypt.AppIdentityError:
         print "invalid token"
+        return json.dumps({'success': True, 'message': 'Invalid token'}), 400
 
-    return json.dumps({'success': True, 'message': 'You are now signed in'}), 200
+
 
 @app.route('/login', methods=['POST'])
 def login():
@@ -220,12 +224,13 @@ def sign_up():
 def sign_out():
     #logout_user()
     # websocket test
-    user_id = get_user_id('hej@h')
+    user_id = session['user_id']
     print "user_id2 is"
     print user_id
 
     print('signout was visited')
     if status():
+        del websockets[user_id]
         session.pop('logged_in', None)
         return json.dumps({'message': 'You are now signed out'}), 200
     else:
@@ -256,7 +261,6 @@ def register():
 
 
 @app.route('/addgrocery', methods=['POST'])
-
 def add_grocery_in_fridge():
     if status():
         print(session)
@@ -417,7 +421,7 @@ def test_user():
 #print(register())
 #add_grocery_in_fridge()
 
-check_best_before()
+#check_best_before()
 #get_recipes()
 
 if __name__ == '__main__':

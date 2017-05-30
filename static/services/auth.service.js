@@ -17,10 +17,7 @@
         return service;
 
         function GoogleServerAuth(token) {
-            $http.post('/googleauth', { data: token })
-                .then(function (response) {
-                    console.log(response);
-                })
+            return $http.post('/googleauth', { data: token });
         }
 
 
