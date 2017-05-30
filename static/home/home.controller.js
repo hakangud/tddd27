@@ -31,19 +31,26 @@
 
 
          function open () {
-            console.log('clicked modal')
+            console.log('modal')
+            console.log(vm.recipeDetailed.title)
             var modalInstance = $uibModal.open({
                 ariaLabelledBy: 'modal-title',
                 ariaDescribedBy: 'modal-body',
                 templateUrl: 'myModalContent.html',
                 controller: 'HomeController',
                 controllerAs: 'vm'
-
+//                controller: function($scope) {
+//                    $scope.recipeDetailed = recipeDetailed;
+//                }
                 });
             };
 
 
+        vm.name = 'hej'
 
+
+
+        //vm.recipeDetailed = {'title':'kalle'}
 
         var updateFridge = function () {
             console.log('update fridge');
@@ -132,6 +139,8 @@
 
         }
 
+
+
         function getRecipeDetailed(index) {
             console.log('klickade recipe-detailed');
 
@@ -143,6 +152,8 @@
                     console.log(response.data.recipe_detailed);
 
                     vm.recipeDetailed = response.data.recipe_detailed;
+                    vm.recipeDetailed.title = response.data.recipe_detailed['title'];
+                    vm.open();
                     //MsgService.Success(response.data.data);
 
                 },

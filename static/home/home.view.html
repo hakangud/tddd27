@@ -109,14 +109,18 @@
 
 <script type="text/ng-template" id="myModalContent.html">
         <div class="modal-header">
-            <h3 class="modal-title" id="modal-title">I'm a modal!</h3>
+            <h3 class="modal-title" id="modal-title-{{vm.name}}">{{vm.recipeDetailed.title}}</h3>
         </div>
         <div class="modal-body" id="modal-body">
-            <h4>hej</h4>
+                <div><h3>{{vm.recipeDetailed.title}}</h3>
+        <p>Preparation time: {{vm.recipeDetailed.preparation_time}}</p>
+        <p>Instructions: {{vm.recipeDetailed.instructions}}</p>
+        <p>Ingredients:</p>
+        <li ng-repeat="ingredient in vm.recipeDetailed.groceries">{{ingredient.amount}} {{ingredient.name}}</li></div>
 
         </div>
         <div class="modal-footer">
-            <button class="btn btn-primary" type="button" ng-click="vm.ok()">OK</button>
+            <!--<button class="btn btn-primary" type="button" ng-click="vm.ok()">OK</button>-->
         </div>
 </script>
 
