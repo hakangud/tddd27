@@ -9,9 +9,21 @@
     </div>
 </nav>
 
+<div ng-if="!vm.hasFridge" class="col-sm-3 col-md-3">
+<form name="form" ng-submit="vm.addFridgeToDatabase()" role="form">
+        <div class="form-group" ng-class="{ 'has-error': form.name.$dirty && form.name.$error.required }">
+            <label for="fridgeId">Fridge id</label>
+            <input type="fridgeId" name="fridgeId" id="fridgeId" class="form-control" ng-model="vm.fridgeId" required />
+            <span ng-show="form.fridgeId.$dirty && form.fridgeId.$error.required" class="help-block">Fridge id is required</span>
+        </div>
+        <div class="form-actions">
+            <button type="submit" ng-disabled="form.$invalid || vm.dataLoading" class="btn btn-primary">Add fridge</button>
 
+        </div>
+ </form>
+</div>
 
-
+<div ng-if='vm.hasFridge'>
 
     <div class="col-sm-3 col-md-6">
 
@@ -103,6 +115,8 @@
         <li ng-repeat="ingredient in vm.recipeDetailed.groceries">{{ingredient.amount}} {{ingredient.name}}</li></div>
 </div>
 
+
+</div>
 
 </div>
 

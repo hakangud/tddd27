@@ -19,6 +19,7 @@
         service.removeFromDatabase = removeFromDatabase;
         service.getRecipeTitles = getRecipeTitles;
         service.getRecipeDetailed = getRecipeDetailed;
+        service.addFridgeToDatabase = addFridgeToDatabase;
 
         return service;
 
@@ -44,6 +45,12 @@
 
             return this.hasFridge;
         };
+
+
+        function addFridgeToDatabase(fridgeId) {
+            console.log('add fridge to database database');
+            return $http.post('/addfridge', fridgeId);
+        }
 
 
         function updateDatabase(ingredientInFridge) {

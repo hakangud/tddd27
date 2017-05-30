@@ -17,6 +17,7 @@
         vm.getRecipeDetailed = getRecipeDetailed;
         vm.remove_grocery_from_database = remove_grocery_from_database;
         vm.open =  open;
+        vm.addFridgeToDatabase = addFridgeToDatabase;
 
         $scope.enableCustomerDirective = false;
         $scope.showdiv = function(){
@@ -122,6 +123,28 @@
             );
         }
 
+        function addFridgeToDatabase() {
+            console.log('klickade vm.addFridgeToDatabase()');
+
+            FridgeService.addFridgeToDatabase(vm.fridgeId)
+                .then(function (response) {
+                    console.log(response.data.data);
+                    vm.hasFridge = true;
+                    vm.items = response.data.data;
+
+                    MsgService.Success(response.data.message);
+
+                },
+                function (errResponse) {
+                    console.log(errResponse.data.message);
+                    MsgService.Error(errResponse.data.message);
+                }
+            );
+
+
+        }
+
+
         function getRecipeTitles() {
             console.log('klickade recipe-titles');
 
@@ -194,7 +217,7 @@
 
 
         vm.items = FridgeService.getFridgeContent();
-        vm.hasFridge = FridgeService.hasFridge();
+        vm.hasFridge = FridgeService.getHasFridge();
 
 
 

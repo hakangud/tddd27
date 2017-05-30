@@ -213,7 +213,7 @@ def login_registered_user(registered_user):
     data = None
     has_fridge = False
 
-    #check if user has a registered fridge set 
+    #check if user has a registered fridge set
     if registered_user.fridge:
         data = registered_user.fridge.get_all_groceries_in_fridge(convert_to_string = True)
         has_fridge = True
@@ -276,6 +276,17 @@ def register():
             else:
                 return json.dumps({"message": "The email is already in use"}), 400
 
+
+
+@app.route('/addfridge', methods=['POST'])
+def add_fridge():
+    if status():
+        print(session)
+        with app.app_context():
+            data = json.loads(request.data.decode())
+            print(data)
+
+            return json.dumps({"message": "Grocery is added", "data": {'name': 'fish'}}), 200
 
 
 @app.route('/addgrocery', methods=['POST'])
