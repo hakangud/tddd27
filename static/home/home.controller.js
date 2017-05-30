@@ -24,7 +24,7 @@
 //                $scope.anableCustomerDirective = false;
 //            }
 //            else {
-                $scope.anableCustomerDirective = true;
+            $scope.anableCustomerDirective = true;
             //}
 
         };
@@ -54,10 +54,10 @@
         //    }, true);
         //
 
-            //for (var x in SocketService.collection) {
-            //    console.log(x);
-            //}
-            //console.log(SocketService.collection[0].action);
+        //for (var x in SocketService.collection) {
+        //    console.log(x);
+        //}
+        //console.log(SocketService.collection[0].action);
 
         //});
 
@@ -142,25 +142,31 @@
 
 
 
-          //create a seperate controller for logout
-          $scope.logout2 = function() {
-            console.log('clicked loguot');
+        //create a seperate controller for logout
+        $scope.logout2 = function() {
+            console.log('clicked logout');
 
             $http.post('/signout')
-            .then(function (response) {
-                console.log(response.data.message);
-                $location.path('/login');
+                .then(function (response) {
+                    SocketService.ws.close();
+                    var auth2 = gapi.auth2.getAuthInstance();
+                    auth2.signOut().then(function () {
+                        console.log('User signed out.');
+                    });
+                    console.log(response.data.message);
+                    $location.path('/login');
 
-            },
-            function (errResponse) {
-                console.log(errResponse.data.message);
-            }
+                },
+                function (errResponse) {
+                    console.log(errResponse.data.message);
+                    $location.path('/login');
+                }
             );
             //$rootScope.ws.close();
-          };
+        };
 
 
-          vm.items = FridgeService.getFridgeContent();
+        vm.items = FridgeService.getFridgeContent();
 
 
 
