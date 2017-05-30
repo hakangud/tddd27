@@ -72,14 +72,9 @@ class Fridge(db.Model):
     __tablename__ = "fridge"
     id = db.Column('fridge_id', db.Integer, primary_key=True)
     model_name = db.Column('model_name', db.String(100))
-
-    #users = db.relationship('User')
-    #user_id = db.Column(db.Integer, db.ForeignKey('user.user_id'))
     user = db.relationship('User', back_populates="fridge")
-
-    #groceries = db.relationship("GroceriesInFridge", back_populates="fridge")
     groceries = db.relationship("GroceriesInFridge", back_populates="fridge",cascade="all, delete-orphan", lazy="joined")
-
+    #groceries = db.relationship("GroceriesInFridge", back_populates="fridge")
 
     def __init__(self, model_name=None):
         self.model_name = model_name
@@ -121,6 +116,7 @@ class Grocery(db.Model):
     id = db.Column('grocery_id', db.Integer, primary_key=True)
     name = db.Column('name', db.String(100))
     fridge = db.relationship("GroceriesInFridge", back_populates="grocery", cascade="all, delete-orphan", lazy="joined")
+    #fridge = db.relationship("GroceriesInFridge", back_populates="grocery")
     recipes = db.relationship("GroceryInRecipe", back_populates="grocery")
 
     def __init__(self, name=None):
@@ -141,10 +137,11 @@ class GroceriesInFridge(db.Model):
     grocery_id = db.Column (db.Integer, db.ForeignKey('groceries.grocery_id'), primary_key = True)
     amount = db.Column('amount', db.Integer)
     best_before = db.Column('best_before', db.DateTime)
-    #title = db.Column('title', db.String(100))
     fridge = db.relationship("Fridge", back_populates="groceries", lazy="joined")
     grocery = db.relationship("Grocery", back_populates="fridge", lazy="joined")
 
+    #fridge = db.relationship("Fridge", back_populates="groceries")
+    #grocery = db.relationship("Grocery", back_populates="fridge")
 
     def __init__(self, fridge, grocery, amount, best_before):
         self.fridge_id = fridge.id
@@ -202,11 +199,9 @@ class Recipe(db.Model):
                 groceries_to_return.append(grocery_to_return)
         return groceries_to_return
 
-    # Returns the Course as a python-dictionary, does not include instructions
     def get_iterable(self):
         return {'id': self.id, 'title': self.title, 'preparation_time': self.preparation_time}
 
-    # Returns this Course, including instructions, as well as all its Ingredients as a python dictionary
     def get_recipe(self):
         detailed_iterable = self.get_iterable()
         detailed_iterable.update(

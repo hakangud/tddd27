@@ -20,6 +20,13 @@ def initial_db(app, db):
         db.session.add(grocery_4)
         grocery_5 = Grocery(u"Ham")
         db.session.add(grocery_5)
+        egg_grocery = Grocery(u"Egg")
+        db.session.add(egg_grocery)
+
+        salt_grocery = Grocery(u"Salt")
+        db.session.add(salt_grocery)
+        pepper_grocery = Grocery(u"Pepper")
+        db.session.add(pepper_grocery)
 
         #INITIATE DB WITH FRIDGES AND ADD GROCERIES
         fridge_1 = Fridge(u"Super fridge")
@@ -80,12 +87,10 @@ def initial_db(app, db):
         #db.session.delete(association2)
         print('ass')
         print(association2)
-        #query_grocery_in_fridge = Grocery.query.filter(GroceriesInFridge.grocery_id == 3 and GroceriesInFridge.fridge_id == 1).first()
 
-        #print(.query(User).filter(User.keywords.any(keyword='jek')))
+
         query_grocery_in_fridge = Grocery.query.join(GroceriesInFridge).join(Fridge).filter(GroceriesInFridge.grocery_id == 4 and GroceriesInFridge.fridge_id == 1).first()
 
-        query_assosiation = GroceriesInFridge.query.filter(GroceriesInFridge.grocery_id == 1 and GroceriesInFridge.fridge_id == 2).first()
 
         query_assosiation = GroceriesInFridge.query.filter(GroceriesInFridge.grocery_id == 4).filter(GroceriesInFridge.fridge_id == 1).first()
         print('here')
@@ -99,30 +104,30 @@ def initial_db(app, db):
 
 
 
-        tacopaj_course = Recipe(u"Tacopaj", 65, u"Blotlagg strobrodet i mjolken.")
-        tacogryta_course = Recipe(u"Tacogryta", 70, u"Blotlagg strobrodet i mjolken och krydda grytan.")
+        tacopie_recipe = Recipe(u"Taco pie", 65, u"Heat oven to 400F.Grease 9-inch pie plate. Cook ground beef and onion in 10-inch skillet over medium heat, stirring occasionally, until beef is brown, drain. Stir in seasoning mix (dry). Spoon into pie plate, top with chilies.")
+
+        taco_recipe = Recipe(u"Taco", 70, u"Heat oven to 400F. Grease 9-inch pie plate.")
 
 
-        omelette_recipe = Recipe(u"Omelette", 15, u"Blotlagg strobrodet i mjolken.")
-        # tacopaj_course.add_ingredient(butter_ingredient, 75, True)
-        # tacopaj_course.add_ingredient(flour_ingredient, 2, True)
-        # tacopaj_course.add_ingredient(graham_flour_ingredient, 1, True)
-        # tacopaj_course.add_ingredient(sour_cream_ingredient, 3, True)
-        # tacopaj_course.add_ingredient(minced_meat_ingredient, 500, True)
-        # tacopaj_course.add_ingredient(taco_spicemix_ingredient, 40, True)
-        # tacopaj_course.add_ingredient(taco_sauce_ingredient, 260, True)
-        # tacopaj_course.add_ingredient(egg_ingredient, 2, True)
-        # tacopaj_course.add_ingredient(aged_cheese_ingredient, 100, True)
-        # tacopaj_course.add_ingredient(salt_ingredient, 2, False)
-        # tacopaj_course.add_ingredient(pepper_ingredient, 3, False)
+        omelette_recipe = Recipe(u"Omelette", 15, u"Crack the warm eggs into a bowl, add salt and blend with a fork. Heat a 10-inch nonstick aluminum pan over medium-high heat. Once the pan is hot, add the butter and brush around the surface of the pan. Pour the eggs into the center of the pan and stir vigorously with a rubber spatula for 5 seconds.")
+        tacopie_recipe.add_grocery(salt_grocery, 2, False)
+        tacopie_recipe.add_grocery(pepper_grocery, 3, False)
 
-        tacopaj_course.add_grocery(grocery_3, 75, True)
-        tacopaj_course.add_grocery(grocery_1, 2, True)
+        tacopie_recipe.add_grocery(grocery_3, 75, True)
+        tacopie_recipe.add_grocery(grocery_1, 2, True)
 
-        tacogryta_course.add_grocery(grocery_3, 70, True)
-        tacogryta_course.add_grocery(grocery_1, 1, True)
+        taco_recipe.add_grocery(grocery_3, 70, True)
+        taco_recipe.add_grocery(grocery_1, 1, True)
+
+        omelette_recipe.add_grocery(egg_grocery, 3, True)
+        omelette_recipe.add_grocery(grocery_4, 3, True)
+        omelette_recipe.add_grocery(salt_grocery, 2, False)
+        omelette_recipe.add_grocery(pepper_grocery, 3, False)
+
         #tacopaj_course.add_grocery(grocery_2, 1, True)
         #tacopaj_course.add_grocery(grocery_4, 3, True)
-        db.session.add(tacopaj_course)
-        db.session.add(tacogryta_course)
+        db.session.add(tacopie_recipe)
+        db.session.add(taco_recipe)
+        db.session.add(omelette_recipe)
+
         db.session.commit()
