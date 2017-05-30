@@ -13,6 +13,8 @@
 
         service.setFridgeContent = setFridgeContent;
         service.getFridgeContent = getFridgeContent;
+        service.setHasFridge = setHasFridge;
+        service.getHasFridge = getHasFridge;
         service.updateDatabase = updateDatabase;
         service.removeFromDatabase = removeFromDatabase;
         service.getRecipeTitles = getRecipeTitles;
@@ -30,6 +32,17 @@
         function getFridgeContent(){
 
             return this.fridgeContent;
+        };
+
+        function setHasFridge(hasFridge){
+            console.log('set fridge content');
+            this.hasFridge = hasFridge;
+            console.log(this.hasFridge);
+        };
+
+        function getHasFridge(){
+
+            return this.hasFridge;
         };
 
 

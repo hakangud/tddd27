@@ -47,6 +47,9 @@ def initial_db(app, db):
         test_user3 = User('hakangud@gmail.com', 'a', 'Hakan', 'Gudmundsson', '1')
         db.session.add(test_user3)
 
+        test_user4 =User(email='hej@hej')
+        db.session.add(test_user4)
+
         db.session.commit()
 
 

@@ -165,11 +165,22 @@ def google_auth():
         else:
             print "token ok"
             userid = idinfo['sub']
-            return json.dumps({'success': True, 'message': 'You are now signed in'}), 200
+            registered_user = User.query.filter_by(email=idinfo['email']).first()
+            if not registered_user:
+                user = User(email=idinfo['email'])
+                db.session.add(user)
+                db.session.commit()
+                registered_user = User.query.filter_by(email=idinfo['email']).first()
+
+
+            return login_registered_user(registered_user)
+
+
+            #return json.dumps({'message': 'You are now signed in'}), 200
 
     except crypt.AppIdentityError:
         print "invalid token"
-        return json.dumps({'success': True, 'message': 'Invalid token'}), 400
+        return json.dumps({'message': 'Invalid token'}), 400
 
 
 
@@ -181,28 +192,38 @@ def login():
 
         email = data['email']
         password = data['password']
-        #registered_user = User.query.filter_by(email='eme.asp@hej.com', password='hej').first()
+
         registered_user = User.query.filter_by(email=email).first()
 
+        if registered_user is not None and password is not None and registered_user.check_password(password):
 
-
-        if registered_user is not None and registered_user.check_password(password):
-
-            data = None
-
-            if registered_user.fridge:
-                data = registered_user.fridge.get_all_groceries_in_fridge(convert_to_string = True)
-                user_id = registered_user.get_id()
-
-
-            session['logged_in'] = True
-            session['user_id'] = user_id
-            print(status())
-            print(session)
-
-            return json.dumps({'message': 'You are now signed in', 'data': data}), 200
+            return login_registered_user(registered_user)
+            # if registered_user.fridge:
+            #     data = registered_user.fridge.get_all_groceries_in_fridge(convert_to_string = True)
+            #
+            # user_id = registered_user.get_id()
+            # session['logged_in'] = True
+            # session['user_id'] = user_id
+            # print(status())
+            # print(session)
+            #
+            # return json.dumps({'message': 'You are now signed in', 'data': data}), 200
         else:
             return json.dumps({'message': 'Wrong email or password, try again'}), 400
+
+
+def login_registered_user(registered_user):
+    data = None
+    has_fridge = False
+
+    if registered_user.fridge:
+        data = registered_user.fridge.get_all_groceries_in_fridge(convert_to_string = True)
+        has_fridge = True
+    user_id = registered_user.get_id()
+    session['logged_in'] = True
+    session['user_id'] = user_id
+
+    return json.dumps({'message': 'You are now signed in', 'data': data, 'has_fridge': has_fridge}), 200
 
 
 
@@ -241,7 +262,6 @@ def register():
     print(current_user.__repr__())
     with app.app_context():
             data = json.loads(request.data.decode())
-            #user = User('emesasa.asp@hej.com', 'hej','Emelie','Aspholm','2')
 
             user = User(data['email'], data['password'], data['firstName'], data['lastName'], data['fridgeId'])
             registered_email = User.query.filter_by(email=user.email).first()

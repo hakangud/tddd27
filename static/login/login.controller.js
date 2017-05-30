@@ -27,6 +27,8 @@
                         .then(function (response) {
                             console.log(response.data.message);
                             MsgService.Success(response.data.message);
+                            FridgeService.setHasFridge(response.data.has_fridge);
+                            FridgeService.setFridgeContent(response.data.data);
                             $location.path('/home');
                         },
                         function (errResponse) {
@@ -113,6 +115,7 @@
             $http.post('/login', { email: vm.email, password: vm.password })
             .then(function (response) {
                 console.log(response.data.message);
+                FridgeService.setHasFridge(response.data.has_fridge);
                 FridgeService.setFridgeContent(response.data.data);
                 vm.data = response.data.data;
                 console.log(vm.data);

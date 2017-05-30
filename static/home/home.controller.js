@@ -194,6 +194,7 @@
 
 
         vm.items = FridgeService.getFridgeContent();
+        vm.hasFridge = FridgeService.hasFridge();
 
 
 

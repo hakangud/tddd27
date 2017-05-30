@@ -18,11 +18,9 @@ class User(db.Model):
     pw_hash = db.Column('password', db.String(100))
     name = db.Column('name', db.String(100))
     last_name = db.Column('last_name', db.String(100))
-    #fridge = db.Column('number', db.String(100), unique=True)
     registered_on = db.Column('registered_on', db.DateTime)
-    #fridge_id = db.Column('fridge_id', db.Integer, db.ForeignKey('fridge.fridge_id'))
     fridge_id = db.Column(db.Integer, db.ForeignKey('fridge.fridge_id'))
-    #fridge_id = db.relationship('Fridge', back_populates="user")
+
 
     fridge = db.relationship('Fridge', back_populates = "user")
 
@@ -33,7 +31,8 @@ class User(db.Model):
         self.last_name = last_name
         self.fridge_id = fridge_id
         self.registered_on = datetime.utcnow()
-        self.set_password(password)
+        if password:
+            self.set_password(password)
 
 
     def set_password(self, password):
