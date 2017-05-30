@@ -53,6 +53,11 @@ def initial_db(app, db):
         db.session.commit()
 
 
+        #test_user4.fridge_id = 4
+        #db.session.add(test_user4)
+        #db.session.commit()
+
+
         association3 = GroceriesInFridge(fridge_1, grocery_1, '200', datetime(2017, 05, 31))
         db.session.add(association3)
 

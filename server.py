@@ -132,6 +132,7 @@ def get_user_id(email):
     user_id = registered_user.get_id()
     return user_id
 
+
 @app.route('/websocket')
 def websocket():
     if request.environ.get('wsgi.websocket'):
@@ -238,6 +239,8 @@ def status():
 def sign_up():
     return json.dumps({'message': 'You are now signed up'}), 200
 
+
+
 @app.route('/signout', methods=['POST'])
 #@login_required
 def sign_out():
@@ -254,6 +257,8 @@ def sign_out():
         return json.dumps({'message': 'You are now signed out'}), 200
     else:
         return json.dumps({'message': 'You are not signed in'}), 400
+
+
 
 @app.route('/register', methods=['POST'])
 def register():
@@ -285,8 +290,14 @@ def add_fridge():
         with app.app_context():
             data = json.loads(request.data.decode())
             print(data)
+            user = User.query.filter_by(id=session['user_id']).first()
+            user.fridge_id = data
+            db.session.add(user)
+            db.session.commit()
+            fridge = Fridge.query.filter_by(id=data).first()
+            data = fridge.get_all_groceries_in_fridge(convert_to_string = True)
 
-            return json.dumps({"message": "Grocery is added", "data": {'name': 'fish'}}), 200
+            return json.dumps({"message": "Fridge is added", "data": data}), 200
 
 
 @app.route('/addgrocery', methods=['POST'])
@@ -327,10 +338,7 @@ def add_grocery_in_fridge():
                 return json.dumps({"message": "Grocery is not defined"}), 400
 
 
-
-
 @app.route('/removegrocery', methods=['POST'])
-
 def remove_grocery_in_fridge():
     if status():
         print(session)
@@ -402,6 +410,7 @@ def get_recipes():
             print('recipes_to_return')
             print(recipes_to_return)
             return json.dumps({'recipes': recipes_to_return}), 200
+
 
 @app.route('/getrecipedetailed/<title>', methods=['GET'])
 def get_recipe_detailed(title):
