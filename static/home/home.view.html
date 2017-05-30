@@ -17,7 +17,7 @@
 
 <h3>This is the content of your fridge:</h3>
 
-<table>
+<table class = "table-striped">
     <tr>
         <th>Grocery</th>
         <th>Amount</th>
@@ -28,7 +28,7 @@
         <td>{{item.name}}</td>
         <td>{{item.amount}}</td>
         <td>{{item.best_before}}</td>
-        <td><button ng-click="vm.remove_grocery_from_database($index)" class="btn btn-primary">Remove</button></td>
+        <td><button ng-click="vm.remove_grocery_from_database($index)">Remove</button></td>
 
     </tr>
 </table>
