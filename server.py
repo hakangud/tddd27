@@ -175,9 +175,6 @@ def google_auth():
 
             return login_registered_user(registered_user)
 
-
-            #return json.dumps({'message': 'You are now signed in'}), 200
-
     except crypt.AppIdentityError:
         print "invalid token"
         return json.dumps({'message': 'Invalid token'}), 400
@@ -216,6 +213,7 @@ def login_registered_user(registered_user):
     data = None
     has_fridge = False
 
+    #check if user has a registered fridge set 
     if registered_user.fridge:
         data = registered_user.fridge.get_all_groceries_in_fridge(convert_to_string = True)
         has_fridge = True
