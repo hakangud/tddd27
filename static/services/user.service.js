@@ -17,7 +17,6 @@
         function Create(user) {
             return $http.post('/register', user);
         }
-
     }
 
 })();

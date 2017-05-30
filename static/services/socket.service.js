@@ -5,8 +5,7 @@
         .module('ss', [])
         .factory('SocketService', SocketService);
 
-    SocketService.$inject = ['$rootScope', '$timeout', 'FridgeService'];
-    function SocketService($rootScope, $timeout, FridgeService) {
+    function SocketService() {
         var service = {};
         var collection = [];
         var actions = [];
