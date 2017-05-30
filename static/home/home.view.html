@@ -96,7 +96,7 @@
 
 
 <div id="d" class="col-sm-9 col-md-6">
-    <div ng-if='anableCustomerDirective'><h3>{{vm.recipeDetailed.title}}</h3>
+    <div ng-if='enableCustomerDirective'><h3>{{vm.recipeDetailed.title}}</h3>
         <p>Preparation time: {{vm.recipeDetailed.preparation_time}}</p>
         <p>Instructions: {{vm.recipeDetailed.instructions}}</p>
         <p>Ingredients:</p>
@@ -105,6 +105,27 @@
 
 
 </div>
+
+
+<script type="text/ng-template" id="myModalContent.html">
+        <div class="modal-header">
+            <h3 class="modal-title" id="modal-title">I'm a modal!</h3>
+        </div>
+        <div class="modal-body" id="modal-body">
+            <h4>hej</h4>
+
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-primary" type="button" ng-click="vm.ok()">OK</button>
+        </div>
+</script>
+
+
+<button type="button" class="btn btn-default" ng-click="vm.open()">Large modal</button>
+
+
+
+
 
 
 

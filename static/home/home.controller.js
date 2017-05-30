@@ -5,8 +5,8 @@
         .module('app')
         .controller('HomeController', HomeController);
 
-    HomeController.$inject = ['$rootScope', '$location','$http', '$scope', 'FridgeService', 'MsgService', 'SocketService'];
-    function HomeController($rootScope, $location, $http, $scope, FridgeService, MsgService, SocketService) {
+    HomeController.$inject = ['$rootScope', '$location','$http', '$scope', 'FridgeService', 'MsgService', 'SocketService','$uibModal'];
+    function HomeController($rootScope, $location, $http, $scope, FridgeService, MsgService, SocketService, $uibModal) {
         var vm = this;
         console.log("homeC");
         console.log();
@@ -16,18 +16,34 @@
         vm.getRecipeTitles = getRecipeTitles;
         vm.getRecipeDetailed = getRecipeDetailed;
         vm.remove_grocery_from_database = remove_grocery_from_database;
+        vm.open =  open;
 
-
-        $scope.anableCustomerDirective = false;
+        $scope.enableCustomerDirective = false;
         $scope.showdiv = function(){
-//            if ($scope.anableCustomerDirective){
-//                $scope.anableCustomerDirective = false;
+//            if ($scope.enableCustomerDirective){
+//                $scope.enableCustomerDirective = false;
 //            }
 //            else {
-                $scope.anableCustomerDirective = true;
+                $scope.enableCustomerDirective = true;
             //}
 
         };
+
+
+         function open () {
+            console.log('clicked modal')
+            var modalInstance = $uibModal.open({
+                ariaLabelledBy: 'modal-title',
+                ariaDescribedBy: 'modal-body',
+                templateUrl: 'myModalContent.html',
+                controller: 'HomeController',
+                controllerAs: 'vm'
+
+                });
+            };
+
+
+
 
         var updateFridge = function () {
             console.log('update fridge');
