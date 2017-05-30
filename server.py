@@ -3,7 +3,6 @@ from gevent.pywsgi import WSGIServer
 from geventwebsocket.handler import WebSocketHandler
 from db_models import *
 from initial_db import initial_db
-from flask_login import LoginManager, login_user, logout_user, current_user, login_required
 from flask_sqlalchemy import SQLAlchemy
 import json
 import os
@@ -24,11 +23,6 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///localdb2.db'
 
 db.init_app(app)
 initial_db(app, db)
-
-login_manager = LoginManager()
-login_manager.init_app(app)
-
-login_manager.login_view = 'login'
 
 websockets = {}
 
@@ -51,61 +45,12 @@ def send_email(email, data):
     print "email sent"
     s.quit()
 
-@login_manager.user_loader
-def load_user(id):
-    print("du er her")
-    print(id)
-    return User.query.get(int(id))
-
-@app.before_request
-def before_request():
-    g.user = current_user
 
 @app.route('/')
 def init():
     return send_file('templates/index.html')
 
-# @app.route('/login', methods=['POST'])
-# def login():
-#     user=g.user
-#     print(user.__repr__())
-#     with app.app_context():
-#         data = json.loads(request.data.decode())
-#
-#         email = data['email']
-#         password = data['password']
-#         #registered_user = User.query.filter_by(email='eme.asp@hej.com', password='hej').first()
-#         registered_user = User.query.filter_by(email=email, password=password).first()
-#         #logout_user()
-#         if registered_user is None:
-#             print "user is none"
-#             return json.dumps({'message': 'Wrong email or password, try again'}), 400
-#
-#         #if current_user.is_authenticated():
-#         #    print('authentivatetd before login')
-#
-#         if user.is_authenticated:
-#             print('authentivatetd before login not funcion')
-#
-#         #if current_user.is_active():
-#         #    print('active before login')
-#
-#         if current_user.is_active:
-#             print('active before login not funcion')
-#
-#
-#         print(current_user.__repr__())
-#
-#         login_user(registered_user)
-#         print(current_user.__repr__())
-#         #return groceries in the users fridge
-#         data = '1qaz2wsdx3edc'
-#
-#         if current_user.is_authenticated:
-#             print('yes')
-#             return json.dumps({'message': 'You are now signed in', 'data': data}), 200
-#         else:
-#             print('nope')
+
 
 def check_best_before():
     with app.app_context():
@@ -262,7 +207,6 @@ def sign_out():
 
 @app.route('/register', methods=['POST'])
 def register():
-    print(current_user.__repr__())
     with app.app_context():
             data = json.loads(request.data.decode())
 
@@ -456,7 +400,6 @@ def test_user():
         print(data)
         print('user_id:')
         print(user_id)
-        print(current_user.__repr__())
         return fridges
 
 #test_user()
