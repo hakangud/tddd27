@@ -18,3 +18,8 @@ th {
   font-weight: bold;
     padding: 2px;
 }
+
+
+#recipeContent {
+    float: right;
+}

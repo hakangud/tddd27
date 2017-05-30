@@ -30,25 +30,27 @@
         };
 
 
-         function open () {
+         function open (recipeDetailed) {
             console.log('modal')
             console.log(vm.recipeDetailed.title)
             var modalInstance = $uibModal.open({
                 ariaLabelledBy: 'modal-title',
                 ariaDescribedBy: 'modal-body',
                 templateUrl: 'myModalContent.html',
-                controller: 'HomeController',
-                controllerAs: 'vm'
-//                controller: function($scope) {
-//                    $scope.recipeDetailed = recipeDetailed;
-//                }
+                //controller: 'HomeController', function() {
+                //    vm.recipeDetailed = recipeDetailed;
+                //},
+                //controllerAs: 'vm'
+                controller: function($scope) {
+                    $scope.recipeDetailed = recipeDetailed;
+                }
                 });
             };
 
 
         vm.name = 'hej'
 
-
+        vm.recipeDetailed = FridgeService.getRecipe
 
         //vm.recipeDetailed = {'title':'kalle'}
 
@@ -153,7 +155,7 @@
 
                     vm.recipeDetailed = response.data.recipe_detailed;
                     vm.recipeDetailed.title = response.data.recipe_detailed['title'];
-                    vm.open();
+                    vm.open(response.data.recipe_detailed);
                     //MsgService.Success(response.data.data);
 
                 },
