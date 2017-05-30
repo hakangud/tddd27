@@ -44,17 +44,19 @@ def initial_db(app, db):
         test_user2 = User('hej@h', 'hej','Emelie','Aspholm', '2')
         db.session.add(test_user2)
 
+        test_user3 = User('hakangud@gmail.com', 'a', 'Hakan', 'Gudmundsson', '1')
+        db.session.add(test_user3)
 
         db.session.commit()
 
 
-        association3 = GroceriesInFridge(fridge_1, grocery_1, '200', datetime(2017, 05, 29))
+        association3 = GroceriesInFridge(fridge_1, grocery_1, '200', datetime(2017, 05, 31))
         db.session.add(association3)
 
-        association = GroceriesInFridge(fridge_1, grocery_3, '200', datetime(2017, 05, 29))
+        association = GroceriesInFridge(fridge_1, grocery_3, '200', datetime(2017, 05, 31))
         db.session.add(association)
 
-        association2 = GroceriesInFridge(fridge_1, grocery_4, '200', datetime(2017, 05, 28))
+        association2 = GroceriesInFridge(fridge_1, grocery_4, '200', datetime(2017, 05, 31))
         db.session.add(association2)
 
 
