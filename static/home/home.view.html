@@ -1,3 +1,9 @@
+
+<div class="container-fluid">
+  <h1>Hello World!</h1>
+
+    <div class="col-sm-3 col-md-6">
+
 <h3>This is the content of your fridge:</h3>
 
 <table>
@@ -20,7 +26,7 @@
 <h3>Something missing?</h3>
 
 
-<div class="col-md-4">
+
     <form name="form" ng-submit="vm.add_groceries_to_database()" role="form">
         <div class="form-group" ng-class="{ 'has-error': form.name.$dirty && form.name.$error.required }">
             <label for="name">Name</label>
@@ -62,25 +68,23 @@
 
 <!--</div>-->
 
-<button ng-click="vm.getRecipeTitles()">Vad kan jag laga?</button>
-
-<button ng-click="showdiv()">Title1</button>
+    <div class="col-sm-9 col-md-6" >
 
 
-<div class="col-md-4">
 
-<h3>This is what you can cook:</h3>
+<button class="btn btn-primary" ng-click="vm.getRecipeTitles()">What can I cook?</button>
 
     <a ng-click="vm.getRecipeDetailed($index)" ng-repeat="title in vm.titles">
+
         <li ng-click= "showdiv()" class="list-group-item">{{title}}</li>
     </a>
 
-</div>
 
 
 
 
-<div id="d" class="col-md-4">
+
+<div id="d" class="col-sm-9 col-md-6">
     <div ng-if='anableCustomerDirective'><h3>{{vm.recipeDetailed.title}}</h3>
         <p>Preparation time: {{vm.recipeDetailed.preparation_time}}</p>
         <p>Instructions: {{vm.recipeDetailed.instructions}}</p>
@@ -89,7 +93,7 @@
 </div>
 
 
-
+</div>
 
 
 
@@ -98,3 +102,7 @@
 <hr>
 <hr>
 <a href="/#/login" ng-click='logout2()'>Log out</a>
+
+
+
+</div>
