@@ -20,21 +20,23 @@
                     scope: "profile email"
                 }).then(function (auth2) {
                     var auth = gapi.auth2.getAuthInstance();
-                    auth.signIn();
-                    var googleUser = auth.currentUser.get();
-                    var id_token = googleUser.getAuthResponse().id_token;
-                    AuthService.GoogleServerAuth(id_token)
-                        .then(function (response) {
-                            console.log(response.data.message);
-                            MsgService.Success(response.data.message);
-                            FridgeService.setHasFridge(response.data.has_fridge);
-                            FridgeService.setFridgeContent(response.data.data);
-                            $location.path('/home');
-                        },
-                        function (errResponse) {
-                            console.log(errResponse.data.message);
-                            MsgService.Error(errResponse.data.message);
-                            $location.path('/login');
+                    auth.signIn().
+                        then(function () {
+                            var googleUser = auth.currentUser.get();
+                            var id_token = googleUser.getAuthResponse().id_token;
+                            AuthService.GoogleServerAuth(id_token)
+                                .then(function (response) {
+                                    SocketService.initWS(googleUser.getBasicProfile().getEmail());
+                                    MsgService.Success(response.data.message);
+                                    FridgeService.setHasFridge(response.data.has_fridge);
+                                    FridgeService.setFridgeContent(response.data.data);
+                                    $location.path('/home');
+                                },
+                                function (errResponse) {
+                                    console.log(errResponse.data.message);
+                                    MsgService.Error(errResponse.data.message);
+                                    $location.path('/login');
+                                });
                         });
                 });
             });
