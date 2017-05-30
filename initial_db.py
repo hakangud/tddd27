@@ -48,10 +48,10 @@ def initial_db(app, db):
         db.session.commit()
 
 
-        association3 = GroceriesInFridge(fridge_1, grocery_1, '200', datetime(2017, 05, 29))
+        association3 = GroceriesInFridge(fridge_1, grocery_1, '200', datetime(2017, 05, 31))
         db.session.add(association3)
 
-        association = GroceriesInFridge(fridge_1, grocery_3, '200', datetime(2017, 05, 29))
+        association = GroceriesInFridge(fridge_1, grocery_3, '200', datetime(2017, 05, 31))
         db.session.add(association)
 
         association2 = GroceriesInFridge(fridge_1, grocery_4, '200', datetime(2017, 05, 28))

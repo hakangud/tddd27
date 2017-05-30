@@ -47,7 +47,7 @@ def send_email(email, data):
 
     s = smtplib.SMTP('localhost')
     print "sending email"
-    s.sendmail('hakangud@gmail.com', ['hakangud@gmail.com'], msg.as_string())
+    s.sendmail('my fridge', [email], msg.as_string())
     print "email sent"
     s.quit()
 
@@ -124,7 +124,7 @@ def check_best_before():
             if grocery_expires_tomorrow:
                 print(user.email)
                 print(grocery_expires_tomorrow)
-                #send_email(str(user.email), grocery_expires_tomorrow)
+                send_email(str(user.email), grocery_expires_tomorrow)
 
 
 def get_user_id(email):
