@@ -175,14 +175,21 @@
 
             $http.post('/signout')
                 .then(function (response) {
-                    SocketService.ws.close();
-                    var auth2 = gapi.auth2.getAuthInstance();
-                    auth2.signOut().then(function () {
-                        console.log('User signed out.');
+                    //SocketService.ws.close();
+                    gapi.load('auth2', function() {
+                        gapi.auth2.init({
+                            client_id: '192085420693-gnet8a4sjhn89ll6ejjho1tudv3l2oaa.apps.googleusercontent.com',
+                            scope: "profile email"
+                        }).then(function () {
+                                var auth = gapi.auth2.getAuthInstance();
+                                if (auth.isSignedIn.get()) {
+                                    auth.signOut();
+                                }
+                        })
                     });
+
                     console.log(response.data.message);
                     $location.path('/login');
-
                 },
                 function (errResponse) {
                     console.log(errResponse.data.message);
