@@ -74,38 +74,14 @@
     </form>
 </div>
 
-
 </div>
-
-
-
-
-<!--<div>-->
-    <!--<input type="text" ng-model="extraGrocery" placeholder="Enter the grocery here">-->
-    <!--<input type="text" ng-model="extraGroceryAmount" placeholder="Enter the amount here">-->
-    <!--<input type="text" ng-model="extraGroceryBestbefore" placeholder="Enter the best before date here">-->
-    <!--<hr>-->
-    <!--<p>{{ extraGrocery }} {{ extraGroceryAmount }} {{ extraGroceryBestbefore }}</p>-->
-    <!--<a href="" ng-click='addGroceryToDatabase()'>Add groecery</a>-->
-
-
-<!--</div>-->
-
     <div class="col-sm-9 col-md-3" id="recipeContent">
-
-
-
 <button class="btn btn-primary" ng-click="vm.getRecipeTitles()">What can I cook?</button>
 
     <a ng-click="vm.getRecipeDetailed($index)" ng-repeat="title in vm.titles">
 
         <li ng-click= "showdiv()" class="list-group-item">{{title}}</li>
     </a>
-
-
-
-
-
 
 <div id="d">
     <div ng-if='enableCustomerDirective'><h3>{{vm.recipeDetailed.title}}</h3>
@@ -114,10 +90,7 @@
         <p>Ingredients:</p>
         <li ng-repeat="ingredient in vm.recipeDetailed.groceries">{{ingredient.amount}} {{ingredient.name}}</li></div>
 </div>
-
-
 </div>
-
 </div>
 
 
@@ -134,13 +107,8 @@
 
         </div>
         <div class="modal-footer">
-            <!--<button class="btn btn-primary" type="button" ng-click="vm.ok()">OK</button>-->
         </div>
 </script>
-
-
-
-
 <hr>
 <hr>
 <hr>

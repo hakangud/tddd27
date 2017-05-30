@@ -8,8 +8,6 @@
     HomeController.$inject = ['$rootScope', '$location','$http', '$scope', 'FridgeService', 'MsgService', 'SocketService','$uibModal'];
     function HomeController($rootScope, $location, $http, $scope, FridgeService, MsgService, SocketService, $uibModal) {
         var vm = this;
-        console.log("homeC");
-        console.log();
 
         vm.SocketService = SocketService;
         vm.add_groceries_to_database = add_groceries_to_database;
@@ -46,14 +44,11 @@
                     $scope.recipeDetailed = recipeDetailed;
                 }
                 });
-            };
+            }
 
 
         vm.name = 'hej'
-
         vm.recipeDetailed = FridgeService.getRecipe
-
-        //vm.recipeDetailed = {'title':'kalle'}
 
         var updateFridge = function () {
             console.log('update fridge');
@@ -62,34 +57,6 @@
         };
 
         SocketService.registerCallback(updateFridge);
-
-        // deep watch for websocket event
-        //$scope.$watch(SocketService.collection, function () {
-        //    console.log("running watch function");
-        //    console.log(SocketService);
-        //    angular.forEach(SocketService.collection, function (value, key) {
-        //
-        //        console.log(value);
-        //        console.log(value.action);
-        //        if (value.action === 'updategroceries') {
-        //            console.log(value.data[0]);
-        //            console.log('message = ' + value.message);
-        //            vm.items = value.data;
-        //        }
-        //
-        //    }, true);
-        //
-
-        //for (var x in SocketService.collection) {
-        //    console.log(x);
-        //}
-        //console.log(SocketService.collection[0].action);
-
-        //});
-
-        //$rootScope.$apply(function () {
-        //    SocketService
-        //})
 
         function add_groceries_to_database() {
             console.log("reg");
@@ -190,9 +157,6 @@
 
         }
 
-
-
-        //create a seperate controller for logout
         $scope.logout2 = function() {
             console.log('clicked logout');
 
@@ -219,7 +183,6 @@
                     $location.path('/login');
                 }
             );
-            //$rootScope.ws.close();
         };
 
 
