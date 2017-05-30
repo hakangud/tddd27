@@ -12,6 +12,7 @@
         var actions = [];
         var ws = new WebSocket('ws://' + location.host + '/websocket');
 
+        service.ws = ws;
         service.actions = actions;
         service.collection = collection;
         service.initWS = initWS;
@@ -33,6 +34,14 @@
             console.log(msg.data);
             actions[0] = JSON.parse(msg.data);
             notifyObservers();
+        };
+
+        ws.onclose = function () {
+            console.log('socket closed');
+        };
+
+        ws.onopen = function () {
+            console.log('socket opened');
         };
 
         function initWS(email) {
