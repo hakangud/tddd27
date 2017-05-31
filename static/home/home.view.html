@@ -13,7 +13,7 @@
 <form name="form" ng-submit="vm.addFridgeToDatabase()" role="form">
         <div class="form-group" ng-class="{ 'has-error': form.name.$dirty && form.name.$error.required }">
             <label for="fridgeId">Fridge id</label>
-            <input type="fridgeId" name="fridgeId" id="fridgeId" class="form-control" ng-model="vm.fridgeId" required />
+            <input type="number" name="fridgeId" id="fridgeId" class="form-control" ng-model="vm.fridgeId" required />
             <span ng-show="form.fridgeId.$dirty && form.fridgeId.$error.required" class="help-block">Fridge id is required</span>
         </div>
         <div class="form-actions">
@@ -53,17 +53,17 @@
     <form name="form" ng-submit="vm.add_groceries_to_database()" role="form">
         <div class="form-group" ng-class="{ 'has-error': form.name.$dirty && form.name.$error.required }">
             <label for="name">Name</label>
-            <input type="name" name="name" id="name" class="form-control" ng-model="vm.grocery.name" required />
+            <input type="text" name="name" id="name" class="form-control" ng-model="vm.grocery.name" required />
             <span ng-show="form.name.$dirty && form.name.$error.required" class="help-block">Name is required</span>
         </div>
         <div class="form-group" ng-class="{ 'has-error': form.amount.$dirty && form.amount.$error.required }">
             <label for="amount">Amount</label>
-            <input type="amount" name="amount" id="amount" class="form-control" ng-model="vm.grocery.amount" required />
+            <input type="number" name="amount" id="amount" class="form-control" ng-model="vm.grocery.amount" required />
             <span ng-show="form.amount.$dirty && form.amount.$error.required" class="help-block">Amount is required</span>
         </div>
         <div class="form-group" ng-class="{ 'has-error': form.bestBefore.$dirty && form.bestBefore.$error.required }">
             <label for="bestBefore">Best before</label>
-            <input type="bestBefore" name="bestBefore" id="bestBefore" class="form-control" ng-model="vm.grocery.bestBefore" required />
+            <input type="text" name="bestBefore" id="bestBefore" class="form-control" ng-model="vm.grocery.bestBefore" required />
             <span ng-show="form.bestBefore.$dirty && form.bestBefore.$error.required" class="help-block">Best before is required</span>
         </div>
 
@@ -83,13 +83,13 @@
         <li ng-click= "showdiv()" class="list-group-item">{{title}}</li>
     </a>
 
-<div id="d">
-    <div ng-if='enableCustomerDirective'><h3>{{vm.recipeDetailed.title}}</h3>
-        <p>Preparation time: {{vm.recipeDetailed.preparation_time}}</p>
-        <p>Instructions: {{vm.recipeDetailed.instructions}}</p>
-        <p>Ingredients:</p>
-        <li ng-repeat="ingredient in vm.recipeDetailed.groceries">{{ingredient.amount}} {{ingredient.name}}</li></div>
-</div>
+<!--<div id="d">-->
+    <!--<div ng-if='enableCustomerDirective'><h3>{{vm.recipeDetailed.title}}</h3>-->
+        <!--<p>Preparation time: {{vm.recipeDetailed.preparation_time}}</p>-->
+        <!--<p>Instructions: {{vm.recipeDetailed.instructions}}</p>-->
+        <!--<p>Ingredients:</p>-->
+        <!--<li ng-repeat="ingredient in vm.recipeDetailed.groceries">{{ingredient.amount}} {{ingredient.name}}</li></div>-->
+<!--</div>-->
 </div>
 </div>
 

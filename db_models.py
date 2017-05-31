@@ -86,7 +86,7 @@ class Fridge(db.Model):
         return self.id
 
 
-    # Method for adding an existing Grocery to this Fridge. The relationship attributes as the last two parameters
+
     def add_grocery(self, grocery, amount, best_before):
         association = GroceriesInFridge(self, grocery=grocery, amount=amount, best_before=best_before)
         #association.grocery = grocery

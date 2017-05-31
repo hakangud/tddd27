@@ -93,10 +93,6 @@ def initial_db(app, db):
 
 
         query_assosiation = GroceriesInFridge.query.filter(GroceriesInFridge.grocery_id == 4).filter(GroceriesInFridge.fridge_id == 1).first()
-        print('here')
-        print(query_assosiation)
-
-        print(query_grocery_in_fridge)
 
         db.session.delete(query_assosiation)
         db.session.commit()
@@ -120,12 +116,10 @@ def initial_db(app, db):
         taco_recipe.add_grocery(grocery_1, 1, True)
 
         omelette_recipe.add_grocery(egg_grocery, 3, True)
-        omelette_recipe.add_grocery(grocery_4, 3, True)
+        omelette_recipe.add_grocery(grocery_2, 3, True)
         omelette_recipe.add_grocery(salt_grocery, 2, False)
         omelette_recipe.add_grocery(pepper_grocery, 3, False)
 
-        #tacopaj_course.add_grocery(grocery_2, 1, True)
-        #tacopaj_course.add_grocery(grocery_4, 3, True)
         db.session.add(tacopie_recipe)
         db.session.add(taco_recipe)
         db.session.add(omelette_recipe)
