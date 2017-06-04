@@ -36,7 +36,7 @@ def send_email(email, data):
     s = smtplib.SMTP('localhost')
     s.sendmail('myFridge', [email], msg.as_string())
     s.quit()
-
+    print('send email')
 
 @app.route('/')
 def init():
@@ -50,7 +50,9 @@ def check_best_before():
         tomorrow = datetime.now() + timedelta(days=1)
 
         for user in users:
-            groceries = user.fridge.get_all_groceries_in_fridge(convert_to_string = False)
+            groceries = []
+            if user.fridge:
+                groceries = user.fridge.get_all_groceries_in_fridge(convert_to_string = False)
             grocery_expires_tomorrow = list()
             for grocery in groceries:
                 if datetime.date(grocery['best_before']) == datetime.date(tomorrow):
@@ -253,7 +255,6 @@ def remove_grocery_in_fridge():
 @app.route('/getrecipes', methods=['GET'])
 def get_recipes():
     if status():
-        print(session)
         with app.app_context():
             #data = json.loads(request.data.decode())
 
@@ -298,6 +299,8 @@ def get_recipe_detailed(title):
             print('recipe detailed')
             return json.dumps({'recipe_detailed': recipe.get_recipe()}),200
 
+
+#check_best_before()
 
 if __name__ == '__main__':
     http_server = WSGIServer(('', 8000), app, handler_class=WebSocketHandler)

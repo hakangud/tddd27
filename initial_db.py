@@ -65,17 +65,17 @@ def initial_db(app, db):
         #db.session.commit()
 
 
-        association3 = GroceriesInFridge(fridge_1, grocery_1, '200', datetime(2017, 05, 31))
+        association3 = GroceriesInFridge(fridge_1, grocery_1, '200', datetime(2017, 06, 01))
         db.session.add(association3)
 
         association4 = GroceriesInFridge(fridge_2, grocery_1, '200', datetime(2017, 05, 31))
         db.session.add(association4)
 
 
-        association = GroceriesInFridge(fridge_1, grocery_3, '200', datetime(2017, 05, 31))
+        association = GroceriesInFridge(fridge_1, grocery_3, '200', datetime(2017, 06, 01))
         db.session.add(association)
 
-        association2 = GroceriesInFridge(fridge_1, grocery_4, '200', datetime(2017, 05, 31))
+        association2 = GroceriesInFridge(fridge_1, grocery_4, '200', datetime(2017, 06, 01))
         db.session.add(association2)
 
 
@@ -85,8 +85,8 @@ def initial_db(app, db):
 
         #db.session.delete(association2)
         #db.session.delete(association2)
-        print('ass')
-        print(association2)
+        #print('ass')
+        #print(association2)
 
 
         query_grocery_in_fridge = Grocery.query.join(GroceriesInFridge).join(Fridge).filter(GroceriesInFridge.grocery_id == 4 and GroceriesInFridge.fridge_id == 1).first()
