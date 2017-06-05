@@ -45,7 +45,7 @@ def initial_db(app, db):
 
 
         #INITIATE DB WITH USERS
-        test_user = User('emelie.aspholm@hotmail.com', 'hej','Emelie','Aspholm', '2')
+        test_user = User('emelie.aspholm@hotmail.com', 'hej','Emelie','Aspholm', '1')
         db.session.add(test_user)
 
         test_user2 = User('hej@h', 'hej','Emelie','Aspholm', '2')
@@ -68,7 +68,7 @@ def initial_db(app, db):
         association3 = GroceriesInFridge(fridge_1, grocery_1, '200', datetime(2017, 06, 01))
         db.session.add(association3)
 
-        association4 = GroceriesInFridge(fridge_2, grocery_1, '200', datetime(2017, 05, 31))
+        association4 = GroceriesInFridge(fridge_2, grocery_1, '200', datetime(2017, 06, 01))
         db.session.add(association4)
 
 
@@ -78,12 +78,12 @@ def initial_db(app, db):
         association2 = GroceriesInFridge(fridge_1, grocery_4, '200', datetime(2017, 06, 01))
         db.session.add(association2)
 
+
+
         db.session.commit()
 
         query_grocery_in_fridge = Grocery.query.join(GroceriesInFridge).join(Fridge).filter(GroceriesInFridge.grocery_id == 4 and GroceriesInFridge.fridge_id == 1).first()
 
-        fridge = Fridge.query.join(User).filter(User.id == 3).first()
-        print(fridge.get_fridge_id())
 
         query_assosiation = GroceriesInFridge.query.filter(GroceriesInFridge.grocery_id == 4).filter(GroceriesInFridge.fridge_id == 1).first()
 
