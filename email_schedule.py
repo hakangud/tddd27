@@ -1,3 +1,10 @@
+"""This is the email scheduler.
+
+This script checks the groceries in the fridge once
+every day with server function.
+"""
+
+
 import schedule
 import time
 import server

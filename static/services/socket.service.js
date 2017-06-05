@@ -10,7 +10,6 @@
         var collection = [];
         var actions = [];
         var ws = new WebSocket('ws://' + location.host + '/websocket');
-
         service.ws = ws;
         service.actions = actions;
         service.collection = collection;
@@ -18,6 +17,9 @@
         service.registerCallback = registerCallback;
         service.notifyObservers = notifyObservers;
 
+        //Register a callback function that is executed every time socket
+        //receives a message (we only use a single callback, this could be
+        //changed in the future if we want to register different callbacks).
         function registerCallback(callback) {
             collection.push(callback);
         }
@@ -30,7 +32,6 @@
 
         ws.onmessage = function(msg) {
             console.log('onmessage');
-            console.log(msg.data);
             actions[0] = JSON.parse(msg.data);
             notifyObservers();
         };

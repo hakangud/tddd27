@@ -6,10 +6,8 @@
         .factory('UserService', UserService);
 
     UserService.$inject = ['$http'];
-    console.log("us");
     function UserService($http) {
         var service = {};
-
         service.Create = Create;
 
         return service;

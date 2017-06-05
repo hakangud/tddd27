@@ -1,8 +1,6 @@
 (function () {
     'use strict';
 
-
-
     angular
         .module('app', ['ngRoute', 'ngCookies', 'vpwd', 'ss', 'us', 'msg', 'auth', 'fs', 'ui.bootstrap', 'ui.bootstrap.tpls'])
         .config(config)

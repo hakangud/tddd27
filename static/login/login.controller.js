@@ -7,13 +7,10 @@
 
     LoginController.$inject = ['$rootScope','$location', '$http', 'MsgService', '$scope', 'FridgeService', '$window', 'AuthService', 'SocketService'];
     function LoginController($rootScope, $location, $http, MsgService, $scope, FridgeService, $window, AuthService, SocketService) {
-
         var vm = this;
-
         vm.SocketService = SocketService;
         vm.googleLogin = googleLogin;
         vm.login = login;
-
         function googleLogin() {
             gapi.load('auth2', function() {
                 gapi.auth2.init({
