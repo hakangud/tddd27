@@ -5,8 +5,8 @@
         .module('app')
         .controller('HomeController', HomeController);
 
-    HomeController.$inject = ['$rootScope', '$location','$http', '$scope', 'FridgeService', 'MsgService', 'SocketService','$uibModal'];
-    function HomeController($rootScope, $location, $http, $scope, FridgeService, MsgService, SocketService, $uibModal) {
+    HomeController.$inject = ['$location','$http', 'FridgeService', 'MsgService', 'SocketService','$uibModal'];
+    function HomeController($location, $http, FridgeService, MsgService, SocketService, $uibModal) {
         var vm = this;
         vm.items = FridgeService.getFridgeContent();
         vm.hasFridge = FridgeService.getHasFridge();

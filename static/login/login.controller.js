@@ -5,8 +5,8 @@
         .module('app')
         .controller('LoginController', LoginController);
 
-    LoginController.$inject = ['$rootScope','$location', '$http', 'MsgService', '$scope', 'FridgeService', '$window', 'AuthService', 'SocketService'];
-    function LoginController($rootScope, $location, $http, MsgService, $scope, FridgeService, $window, AuthService, SocketService) {
+    LoginController.$inject = ['$location', '$http', 'MsgService', 'FridgeService', 'AuthService', 'SocketService'];
+    function LoginController($location, $http, MsgService, FridgeService, AuthService, SocketService) {
         var vm = this;
         vm.SocketService = SocketService;
         vm.googleLogin = googleLogin;

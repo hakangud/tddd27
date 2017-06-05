@@ -5,6 +5,7 @@
         .module('vpwd', [])
         .directive('verifyPassword', verifyPassword);
 
+    //Verifies if two passwords are equal.
     function verifyPassword() {
         return {
             restrict: 'A',

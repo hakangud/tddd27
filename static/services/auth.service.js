@@ -5,8 +5,8 @@
         .module('auth', [])
         .factory('AuthService', AuthService);
 
-    AuthService.$inject = ['$rootScope', '$http'];
-    function AuthService($rootScope, $http) {
+    AuthService.$inject = ['$http'];
+    function AuthService($http) {
         var service = {};
         service.GoogleServerAuth = GoogleServerAuth;
         return service;
