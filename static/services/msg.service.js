@@ -8,7 +8,6 @@
     MsgService.$inject = ['$rootScope', '$timeout'];
     function MsgService($rootScope, $timeout) {
         var service = {};
-
         service.Success = Success;
         service.Error = Error;
 

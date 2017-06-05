@@ -6,11 +6,8 @@
         .factory('FridgeService', FridgeService);
 
     FridgeService.$inject = ['$http'];
-
-    console.log("fs");
     function FridgeService($http) {
         var service = {};
-
         service.setFridgeContent = setFridgeContent;
         service.getFridgeContent = getFridgeContent;
         service.setHasFridge = setHasFridge;
