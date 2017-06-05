@@ -86,7 +86,7 @@ class Fridge(db.Model):
         return self.id
 
 
-
+    #works only before comitting fridge to database first time
     def add_grocery(self, grocery, amount, best_before):
         association = GroceriesInFridge(self, grocery=grocery, amount=amount, best_before=best_before)
         #association.grocery = grocery
@@ -149,12 +149,8 @@ class GroceriesInFridge(db.Model):
         self.amount = amount
         self.best_before = best_before
 
-
-
     def __repr__(self):
         return "".join((self.fridge.__repr__(),", ",self.grocery.__repr__()))
-
-
 
 
 class Recipe(db.Model):
