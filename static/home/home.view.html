@@ -4,7 +4,7 @@
             <a class="navbar-brand" href="/#/home">myFridge</a>
         </div>
         <ul class="nav navbar-nav navbar-right">
-        <li><a href="/#/login" ng-click='logout2()'><span class="glyphicon glyphicon-log-out"></span> Log out</a></li>
+        <li><a href="javascript:void(0)" ng-click='vm.signout()'><span class="glyphicon glyphicon-log-out"></span> Log out</a></li>
     </ul>
     </div>
 </nav>
@@ -83,13 +83,6 @@
         <li ng-click= "showdiv()" class="list-group-item">{{title}}</li>
     </a>
 
-<!--<div id="d">-->
-    <!--<div ng-if='enableCustomerDirective'><h3>{{vm.recipeDetailed.title}}</h3>-->
-        <!--<p>Preparation time: {{vm.recipeDetailed.preparation_time}}</p>-->
-        <!--<p>Instructions: {{vm.recipeDetailed.instructions}}</p>-->
-        <!--<p>Ingredients:</p>-->
-        <!--<li ng-repeat="ingredient in vm.recipeDetailed.groceries">{{ingredient.amount}} {{ingredient.name}}</li></div>-->
-<!--</div>-->
 </div>
 </div>
 
