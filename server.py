@@ -247,6 +247,7 @@ def get_recipe_detailed(title):
         with app.app_context():
             recipe = Recipe.query.filter_by(title= title).first()
             print('recipe detailed')
+
             return json.dumps({'recipe_detailed': recipe.get_recipe()}),200
 
 if __name__ == '__main__':
