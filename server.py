@@ -167,7 +167,6 @@ def add_fridge():
             data = fridge.get_all_groceries_in_fridge(convert_to_string = True)
             return json.dumps({"message": "Fridge is added", "data": data}), 200
 
-
 @app.route('/addgrocery', methods=['POST'])
 def add_grocery_in_fridge():
     if status():
