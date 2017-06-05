@@ -54,8 +54,6 @@ def initial_db(app, db):
         test_user3 = User('hakangud@gmail.com', 'a', 'Hakan', 'Gudmundsson', '1')
         db.session.add(test_user3)
 
-        test_user4 =User(email='hej@hej')
-        db.session.add(test_user4)
 
         db.session.commit()
 
@@ -68,7 +66,7 @@ def initial_db(app, db):
         association3 = GroceriesInFridge(fridge_1, grocery_1, '200', datetime(2017, 06, 01))
         db.session.add(association3)
 
-        association4 = GroceriesInFridge(fridge_2, grocery_1, '200', datetime(2017, 05, 31))
+        association4 = GroceriesInFridge(fridge_2, grocery_1, '200', datetime(2017, 06, 01))
         db.session.add(association4)
 
 
@@ -77,8 +75,6 @@ def initial_db(app, db):
 
         association2 = GroceriesInFridge(fridge_1, grocery_4, '200', datetime(2017, 06, 01))
         db.session.add(association2)
-
-
 
         db.session.commit()
 
