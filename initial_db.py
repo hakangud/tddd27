@@ -1,7 +1,7 @@
 from db_models import Fridge, User, Grocery, GroceriesInFridge, Recipe
 from datetime import datetime
 
-#INIATE DB WITH RECIPIES, TEST USERS, FRIDGES AND GROCERIES
+#INIATE DB WITH RECIPES, TEST USERS, FRIDGES AND GROCERIES
 def initial_db(app, db):
     with app.app_context():
         db.drop_all()
